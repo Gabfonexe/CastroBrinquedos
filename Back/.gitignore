@@ -1,0 +1,7 @@
+__pycache__
+logs
+Pipfile
+tmp*
+*.xlsx
+run.py
+.env

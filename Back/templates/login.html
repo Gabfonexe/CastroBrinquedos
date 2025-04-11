@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .topbar {
+            background-color: #343a40;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .login-container {
+            margin-top: 5%;
+        }
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .login-box h2 {
+            margin-bottom: 20px;
+        }
+        .logo {
+            max-width: 150px;
+            margin-bottom: 30px;
+        }
+        .form-group input {
+            margin-bottom: 15px;
+        }
+        .btn-block {
+            padding: 12px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="topbar">Central de Administração Castro Brinquedos</div>
+
+    <div class="container text-center login-container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-box">
+                    <img src="https://api.fullfacil.co/static/logo.png" alt="Logo FullFacil" class="logo">
+
+                    <h2>Admin Login</h2>
+                    <form method="POST">
+                        <div class="form-group">
+                            <input type="password" class="form-control" name="password" placeholder="Digite a senha" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
