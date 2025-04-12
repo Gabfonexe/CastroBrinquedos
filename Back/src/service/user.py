@@ -25,6 +25,5 @@ def update_user(user:Users):
 
 
 def list_users():
-    
     users = db.session.query(Users).all()
     return users
