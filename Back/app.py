@@ -9,6 +9,8 @@ from flask_migrate import Migrate
 from src.extensions.extensions import db
 from src.model.date import Dates
 from src.model.user import Users
+from src.model.calendar import Calendar
+from src.model.products import Products
 from admin import init_app as init_admin
 from src.controller import flask_admin 
 

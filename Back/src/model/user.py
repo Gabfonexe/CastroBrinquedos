@@ -14,4 +14,4 @@ class Users(db.Model):
     message: str = db.Column(db.String(700))
     date: str = db.Column(db.String(100))
     budget: float = db.Column(db.Float)
-    is_confirmed: bool = db.Column(db.Bool, default=False)
+    is_confirmed: bool = db.Column(db.Boolean, default=False)
