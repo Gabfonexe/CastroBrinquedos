@@ -11,3 +11,6 @@ class Products(db.Model):
     type: Types_Products = db.Column(db.Enum(Types_Products), nullable=False)
     quantity: Integer = db.Column(db.Integer)
     is_available: bool = db.Column(db.Boolean, default=False)
+    price: float = db.Column(db.Float)
+    # criar uma coluna de price
+    # No front, add um valor extra no price caso seja fim de semana
