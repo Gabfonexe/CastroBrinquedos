@@ -7,3 +7,4 @@ class Types_Products(Enum):
     CASA_BOLINHA_GRANDE = 'Casa de Bolinha Grande'
     TOBOGA_INFLAVEL = 'Tobogã Inflável'
 
+

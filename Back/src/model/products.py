@@ -10,3 +10,4 @@ class Products(db.Model):
     id: BigInteger = db.Column(db.BigInteger, primary_key=True)
     type: Types_Products = db.Column(db.Enum(Types_Products), nullable=False)
     quantity: Integer = db.Column(db.Integer)
+    is_available: bool = db.Column(db.Boolean, default=False)

@@ -63,12 +63,14 @@ class UserModelView(ModelView):
         "message",
         "date",
         "budget",
+        "is_confirmed",
     ]
     form_columns = [ 
         "name",
         "email",
         "number",
-        "budget",]
+        "budget",
+        "is_confirmed",]
 
     can_create = False
     can_delete = True
