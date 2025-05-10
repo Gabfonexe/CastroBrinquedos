@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 54a651081bf2
+Revision ID: c590fc1b80d7
 Revises: 
-Create Date: 2025-04-13 00:55:56.827623
+Create Date: 2025-05-08 21:55:25.431506
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '54a651081bf2'
+revision = 'c590fc1b80d7'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,6 +22,12 @@ def upgrade():
     sa.Column('id', sa.BigInteger(), nullable=False),
     sa.Column('date', sa.Date(), nullable=False),
     sa.Column('day_quantity', sa.Integer(), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('Date Unavailable',
+    sa.Column('id', sa.BigInteger(), nullable=False),
+    sa.Column('date', sa.Date(), nullable=False),
+    sa.Column('reason', sa.String(length=120), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('Dates',
@@ -47,6 +53,7 @@ def upgrade():
     sa.Column('date', sa.String(length=100), nullable=True),
     sa.Column('budget', sa.Float(), nullable=True),
     sa.Column('is_confirmed', sa.Boolean(), nullable=True),
+    sa.Column('products', sa.JSON(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user_products',
@@ -65,5 +72,6 @@ def downgrade():
     op.drop_table('users')
     op.drop_table('Products')
     op.drop_table('Dates')
+    op.drop_table('Date Unavailable')
     op.drop_table('Calendar')
     # ### end Alembic commands ###

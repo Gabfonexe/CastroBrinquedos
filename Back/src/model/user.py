@@ -18,7 +18,9 @@ class Users(db.Model):
     date: str = db.Column(db.String(100))
     budget: float = db.Column(db.Float)
     is_confirmed: bool = db.Column(db.Boolean, default=False)
-    products: Mapped[list["Products"]] = relationship('Products', secondary='user_products', backref='users')
+    is_checked: bool =  db.Column(db.Boolean, default=False)
+    # products: Mapped[list["Products"]] = relationship('Products', secondary='user_products', backref='users')
+    products: List[dict] = db.Column(db.JSON)
 
 user_products = db.Table(
     'user_products',

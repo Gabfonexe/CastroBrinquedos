@@ -3,5 +3,5 @@ from src.extensions.extensions import db
 
 
 def list_products():
-    users = db.session.query(Products).all()
-    return users
+    products = db.session.query(Products).all()
+    return products
