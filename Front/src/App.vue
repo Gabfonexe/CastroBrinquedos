@@ -15,14 +15,14 @@
 
     <section class="products-section py-8 px-4" ref="products">
       <h2 class="text-3xl text-center text-primary mb-6">Nossos Brinquedos</h2>
-      <Carousel :value="products" :numVisible="3" :numScroll="1" :responsiveOptions="responsiveOptions">
+      <Carousel :value="products2" :numVisible="3" :numScroll="1" :responsiveOptions="responsiveOptions">
         <template #item="slotProps">
           <Card class="m-2 shadow-2">
             <template #header>
-              <img :src="slotProps.data.image" :alt="slotProps.data.name" class="w-full h-48 object-cover rounded-t" />
+              <img :src="slotProps.data.image" :alt="slotProps.data.type" class="w-full h-48 object-cover rounded-t" />
             </template>
             <template #title>
-              <div class="text-center font-bold">{{ slotProps.data.name }}</div>
+              <div class="text-center font-bold">{{ slotProps.data.type }}</div>
             </template>
             <template #content>
               <p class="text-sm text-center">{{ slotProps.data.description }}</p>
@@ -38,6 +38,7 @@
                   :class="[isProductSelected(slotProps.data) ? 'p-button-outlined p-button-success' : 'p-button-success']"
                   class="mt-2"
                 />
+                <InputText v-model="slotProps.data.quantity" type="number" size="small" :min="0" :max="slotProps.data.quantity" placeholder="Quantidade" />
               </div>
             </template>
           </Card>
@@ -56,6 +57,7 @@
           :disabledDates="disabledDates"
           class="p-calendar"
         />
+        <!-- colocar tooltip dps -->
       </div>
     </section>
 
@@ -63,7 +65,7 @@
       <h2 class="text-3xl text-center text-primary mb-3">Entre em Contato</h2>
       <p class="text-center mb-4">Solicite um orçamento personalizado para sua festa!</p>
       <div class="flex justify-center">
-        <Button label="Fale Conosco" class="p-button-rounded p-button-danger" @click="showContactDialog = true" />
+        <Button label="Fale Conosco" class="p-button-rounded p-button-danger" @click="this.showContactDialog = true;" />
       </div>
     </section>
 
@@ -164,17 +166,15 @@ export default {
         phone: '',
         message: '',
       },
-      disabledDates: [
-        new Date(2025, 11, 25),
-        new Date(2025, 11, 31),
-        new Date(2025, 10, 15),
-      ],
+      disabledDates: [],
       selectedProducts: [],
+      products2: [],
       products: [
-        { id: 1, name: 'Pula-Pula', description: 'Pula-pula grande para crianças de até 12 anos', price: 150, image: 'src/assets/pula_pula.jpg' },
-        { id: 2, name: 'Piscina de Bolinhas', description: '2x2m com 5000 bolinhas', price: 120, image: 'src/assets/piscina_bolinha.jpg' },
-        { id: 3, name: 'Castelo Inflável', description: 'Com escorregador, 3m de altura', price: 200, image: 'src/assets/toboga.jpg' },
-        { id: 4, name: 'Castelo Inflável', description: 'Com escorregador, 3m de altura', price: 200, image: 'https://example.com/castelo.jpg' },
+        { id: 1, name: 'Pula-Pula - Grande', description: 'Pula-pula grande para crianças de até 12 anos', price: 150, image: 'src/assets/pula_pula.jpg', quantity: 0},
+        { id: 2, name: 'Casa de Bolinhas - Pequena', description: '2x2m com 5000 bolinhas', price: 120, image: 'src/assets/piscina_bolinha.jpg', quantity: 0 },
+        { id: 3, name: 'Tobogã Inflável', description: 'Com escorregador, 3m de altura', price: 200, image: 'src/assets/toboga.jpg', quantity: 0 },
+        { id: 4, name: 'Casa de Bolinhas - Grande', description: 'Com escorregador, 3m de altura', price: 200, image: 'src/assets/piscina_bolinha.jpg', quantity: 0 },
+        { id: 5, name: 'Pula-Pula - Médio', description: 'Com escorregador, 3m de altura', price: 200, image: 'src/assets/pula_pula.jpg', quantity: 0 },
       ],
       testimonials: [
         { name: 'Joana Silva', message: 'Excelente serviço! As crianças se divertiram demais.' },
@@ -218,18 +218,45 @@ export default {
       const userData = {
         ...this.contactForm,
         date: this.selectedDate,
-        amount
+        amount,
+        products: this.selectedProducts,
       };
-      axios.post('http://localhost:8080/criar', userData);
+      const response = axios.post('http://localhost:8080/criar', userData);
       this.contactForm = { name: '', email: '', phone: '', message: '' };
       this.showContactDialog = false;
-      this.$toast.add({
-        severity: 'success',
-        summary: 'Sucesso',
-        detail: 'Seu cadastro foi realizado com sucesso!',
-        life: 3000
-      });
-    }
+
+      if(response){
+        this.$toast.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Seu cadastro foi realizado com sucesso!',
+          life: 3000
+        });
+      }
+      else{
+        this.$toast.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Ocorreu um erro ao realizar o envio do formulário.',
+          life: 3000
+        });
+      }
+      
+    },
+  },
+  async beforeMount(){
+    this.products2 = (await axios.get('http://localhost:8080/products')).data;
+    const response = await axios.get('http://localhost:8080/unavailable/dates');
+
+    this.disabledDates = response.data.map(item => {
+      const date = new Date(item.date);
+      date.setHours(date.getHours() + 3);
+      return date
+    });
+
+
+
+    console.log(tgisproducts2);
   }
 };
 </script>
