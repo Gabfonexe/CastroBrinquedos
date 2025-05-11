@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: c590fc1b80d7
+Revision ID: 9e3d82ac58d5
 Revises: 
-Create Date: 2025-05-08 21:55:25.431506
+Create Date: 2025-05-10 21:28:53.185188
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c590fc1b80d7'
+revision = '9e3d82ac58d5'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -37,12 +37,16 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('Products',
-    sa.Column('id', sa.BigInteger(), nullable=False),
+    sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
     sa.Column('type', sa.Enum('PULA_PULA_MEDIO', 'PULA_PULA_GRANDE', 'CASA_BOLINHA_PEQUENA', 'CASA_BOLINHA_GRANDE', 'TOBOGA_INFLAVEL', name='types_products'), nullable=False),
+    sa.Column('description', sa.String(length=180), nullable=True),
     sa.Column('quantity', sa.Integer(), nullable=True),
     sa.Column('is_available', sa.Boolean(), nullable=True),
     sa.Column('price', sa.Float(), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    sa.Column('image', sa.String(length=250), nullable=True),
+    sa.Column('lost_quantity', sa.Integer(), nullable=True),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('type')
     )
     op.create_table('users',
     sa.Column('id', sa.BigInteger(), nullable=False),
@@ -53,6 +57,7 @@ def upgrade():
     sa.Column('date', sa.String(length=100), nullable=True),
     sa.Column('budget', sa.Float(), nullable=True),
     sa.Column('is_confirmed', sa.Boolean(), nullable=True),
+    sa.Column('is_checked', sa.Boolean(), nullable=True),
     sa.Column('products', sa.JSON(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )

@@ -1,6 +1,6 @@
 
 from typing import List
-from sqlalchemy import BigInteger
+from sqlalchemy import BigInteger, Date
 from src.extensions.extensions import db, ma
 from dataclasses import dataclass
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -15,7 +15,7 @@ class Users(db.Model):
     email: str = db.Column(db.String(200))
     number: str = db.Column(db.String(30))
     message: str = db.Column(db.String(700))
-    date: str = db.Column(db.String(100))
+    date: Date = db.Column(db.Date, nullable=False)
     budget: float = db.Column(db.Float)
     is_confirmed: bool = db.Column(db.Boolean, default=False)
     is_checked: bool =  db.Column(db.Boolean, default=False)
