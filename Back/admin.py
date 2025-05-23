@@ -13,7 +13,7 @@ from src.model.products import Products
 from src.extensions.extensions import db
 import os
 
-file_path = os.path.join(os.path.dirname(__file__), 'static/uploads')
+file_path = os.path.join(os.path.dirname(__file__), 'static/')
 
 admin = Admin(name="Castro", template_mode="bootstrap3", index_view=MyAdminIndexView()) 
 
@@ -120,6 +120,7 @@ class DateUnavailableModelView(ModelView):
         "id",
         "date",
         "reason",
+        "product",
     ]
     form_columns = [ 
         "date",

@@ -18,6 +18,7 @@ class DateUnavailable(db.Model):
     id: BigInteger = db.Column(db.BigInteger, primary_key=True)
     date: Date = db.Column(db.Date, nullable=False)
     reason: string = db.Column(db.String(120),nullable=True) 
+    product: string = db.Column(db.String(120),nullable=True) 
 
 
 # Se a quantidade de produtos for zerada (is_unavailable), então aquele dia não poderá estar disponível mais. 

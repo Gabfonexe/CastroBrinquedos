@@ -19,6 +19,7 @@ class Users(db.Model):
     budget: float = db.Column(db.Float)
     is_confirmed: bool = db.Column(db.Boolean, default=False)
     is_checked: bool =  db.Column(db.Boolean, default=False)
+    is_dayli_confirmed: bool = db.Column(db.Boolean, default=False)
     # products: Mapped[list["Products"]] = relationship('Products', secondary='user_products', backref='users')
     products: List[dict] = db.Column(db.JSON)
 
