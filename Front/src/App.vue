@@ -1,94 +1,247 @@
 <template>
-  <div class="app-container">
-    <Toast />
-    <Menubar :model="menuItems" class="mb-4 shadow-2 surface-card" />
 
-    <div class="flex justify-end px-4">
-      <Button icon="pi pi-moon" class="p-button-text" @click="toggleTheme" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  
+  
+  
+  <div class="app-container">
+    <!-- index.html ou public/index.html -->
+
+    <Toast />
+    
+    <MenuTopBar />
+
+    
+  
+      
+  
+    
+  <section class="bg-gradient-to-br from-blue-50 to-white py-16 px-6 sm:px-12">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-3xl sm:text-4xl font-bold text-blue-900 mb-4">
+        Bem-vindo à página de orçamento
+      </h1>
+      <p class="text-gray-700 text-base sm:text-lg mb-8">
+        Aqui você pode alugar brinquedos de forma fácil e rápida! Escolha os produtos, selecione a data, preencha o formulário e aguarde nosso contato. Tudo pensado para garantir diversão com praticidade.
+      </p>
+
+      <div class="bg-white p-6 rounded-xl shadow-md max-w-xl mx-auto">
+        <p class="text-gray-800 mb-4">
+          Está com dúvidas sobre como funciona o processo?
+        </p>
+        <Button 
+          label="Mais Informações" 
+          icon="pi pi-info-circle" 
+          @click="openPosition('top')" 
+          severity="primary" 
+          class="w-full sm:w-auto" 
+        />
+      </div>
     </div>
 
-    <section class="hero-section text-center py-8 px-4 surface-ground">
-      <h1 class="text-5xl font-bold text-primary mb-3">Castro Brinquedos</h1>
-      <p class="text-lg text-color-secondary mb-4">Transforme sua festa em um parque de diversão!</p>
-      <Button label="Ver Brinquedos" class="p-button-raised p-button-rounded p-button-warning" @click="scrollToSection('products')" />
-    </section>
-
-    <section class="products-section py-8 px-4" ref="products">
-      <h2 class="text-3xl text-center text-primary mb-6">Nossos Brinquedos</h2>
-      <Carousel :value="products2" :numVisible="3" :numScroll="1" :responsiveOptions="responsiveOptions">
-        <template #item="slotProps">
-          <Card class="m-2 shadow-2">
-            <template #header>
-              <img :src="slotProps.data.image" :alt="slotProps.data.type" class="w-full h-48 object-cover rounded-t" />
-            </template>
-            <template #title>
-              <div class="text-center font-bold">{{ slotProps.data.type }}</div>
-            </template>
-            <template #content>
-              <p class="text-sm text-center">{{ slotProps.data.description }}</p>
-              <div class="text-center mt-2 font-semibold text-xl text-red-500">
-                R$ {{ slotProps.data.price }}/dia
-              </div>
-            </template>
-            <template #footer>
-              <div class="flex justify-center">
-                <Button
-                  :icon="isProductSelected(slotProps.data) ? 'pi pi-check' : 'pi pi-plus'"
-                  @click="toggleItem(slotProps.data)"
-                  :class="[isProductSelected(slotProps.data) ? 'p-button-outlined p-button-success' : 'p-button-success']"
-                  class="mt-2"
-                />
-                <InputText v-model="slotProps.data.quantity" type="number" size="small" :min="0" :max="slotProps.data.quantity" placeholder="Quantidade" />
-              </div>
-            </template>
-          </Card>
-        </template>
-      </Carousel>
-    </section>
-
-    <section class="calendar-section py-8 px-4 surface-50">
-      <h2 class="text-3xl text-center text-primary mb-4">Disponibilidade</h2>
-      <div class="flex justify-center">
-        <Calendar
-          v-model="selectedDate"
-          :inline="true"
-          :minDate="minDate"
-          :maxDate="maxDate"
-          :disabledDates="disabledDates"
-          class="p-calendar"
-        />
-        <!-- colocar tooltip dps -->
+    <!-- Dialog de Informações -->
+    <Dialog 
+      v-model:visible="visible" 
+      header="Como funciona o aluguel?" 
+      :style="{ width: '30rem' }" 
+      :position="position" 
+      :modal="true" 
+      :draggable="false"
+    >
+      <div class="text-surface-700 dark:text-surface-200 space-y-4 text-sm leading-relaxed">
+        <p>
+          Para realizar o aluguel de brinquedos, siga estes passos:
+        </p>
+        <ol class="list-decimal pl-5 space-y-2">
+          <li>Escolha os brinquedos desejados na lista de produtos.</li>
+          <li>Selecione a <strong>quantidade</strong> de cada item.</li>
+          <li>Escolha a <strong>data do evento</strong> usando o calendário disponível.</li>
+          <li>Preencha o formulário de orçamento com:
+            <ul class="list-disc pl-5 mt-1">
+              <li>Nome completo</li>
+              <li>E-mail</li>
+              <li>Telefone para contato</li>
+              <li>Mensagem adicional (opcional)</li>
+            </ul>
+          </li>
+        </ol>
+        <p>
+          Após o envio, entraremos em contato para confirmar os detalhes e a disponibilidade.
+          <strong class="block mt-2 text-red-600">
+            Importante: a reserva só será garantida após a confirmação do pagamento do valor total do pedido.
+          </strong>
+        </p>
       </div>
-    </section>
 
-    <section class="contact-section py-8 px-4 bg-yellow-100">
-      <h2 class="text-3xl text-center text-primary mb-3">Entre em Contato</h2>
-      <p class="text-center mb-4">Solicite um orçamento personalizado para sua festa!</p>
-      <div class="flex justify-center">
-        <Button label="Fale Conosco" class="p-button-rounded p-button-danger" @click="this.showContactDialog = true;" />
+      <div class="flex justify-end gap-2 mt-6">
+        <Button type="button" label="Fechar" severity="secondary" @click="visible = false" />
       </div>
-    </section>
+    </Dialog>
+  </section>
 
-    <section class="testimonials-section py-8 px-4 surface-ground">
-      <h2 class="text-3xl text-center text-primary mb-6">O que nossos clientes dizem</h2>
-      <div class="grid md:grid-cols-3 gap-4">
-        <Card v-for="testimonial in testimonials" :key="testimonial.name" class="shadow-2 border-round-xl p-4 transition-all hover:shadow-4">
-          <template #content>
-            <p class="italic mb-3">"{{ testimonial.message }}"</p>
-            <div class="text-right font-semibold text-primary">— {{ testimonial.name }}</div>
+
+ 
+
+  
+       
+    <div>
+      <template>
+          <DataView :value="products" :layout="layout">
+              <template #header>
+                  <div class="flex justify-end">
+                      <SelectButton v-model="layout" :options="options" :allowEmpty="false">
+                          <template #option="{ option }">
+                              <i :class="[option === 'list' ? 'pi pi-bars' : 'pi pi-table']" />
+                          </template>
+                      </SelectButton>
+                  </div>
+              </template>
+
+              <template #list="slotProps">
+                  <div class="flex flex-col">
+                      <div v-for="(item, index) in slotProps.items" :key="index">
+                          <div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4" :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }">
+                              <div class="md:w-40 relative">
+                                  <img class="block xl:block mx-auto rounded w-full" :src="`https://primefaces.org/cdn/primevue/images/product/${item.image}`" :alt="item.name" />
+                                  <div class="absolute bg-black/70 rounded-border" style="left: 4px; top: 4px">
+                                      <Tag :value="item.inventoryStatus"></Tag>
+                                  </div>
+                              </div>
+                              <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
+                                  <div class="flex flex-row md:flex-col justify-between items-start gap-2">
+                                      <div>
+                                          <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{ item.category }}</span>
+                                          <div class="text-lg font-medium mt-2">{{ item.type }}</div>
+                                      </div>
+                                      <div class="bg-surface-100 p-1" style="border-radius: 30px">
+                                          <div class="bg-surface-0 flex items-center gap-2 justify-center py-1 px-2" style="border-radius: 30px; box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.04), 0px 1px 2px 0px rgba(0, 0, 0, 0.06)">
+                                              <span class="text-surface-900 font-medium text-sm">{{ item.rating }}</span>
+                                              <i class="pi pi-star-fill text-yellow-500"></i>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="flex flex-col md:items-end gap-8">
+                                      <span class="text-xl font-semibold">${{ item.price }}</span>
+                                      <div class="flex flex-row-reverse md:flex-row gap-2">
+                                          <Button icon="pi pi-heart" outlined></Button>
+                                          <Button icon="pi pi-shopping-cart" label="Buy Now" :disabled="item.inventoryStatus === 'OUTOFSTOCK'" class="flex-auto md:flex-initial whitespace-nowrap"></Button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </template>
+
+              <template #grid="slotProps">
+                  <div class="grid grid-cols-12 gap-4">
+                      <div v-for="(item, index) in slotProps.items" :key="index" class="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-6 p-2">
+                          <div class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col">
+                              <div class="bg-surface-50 flex justify-center rounded p-4">
+                                  <div class="relative mx-auto">
+                                      <img class="rounded w-full" :src="`https://primefaces.org/cdn/primevue/images/product/${item.image}`" :alt="item.type" style="max-width: 300px"/>
+                                      <div class="absolute bg-black/70 rounded-border" style="left: 4px; top: 4px">
+                                          <Tag :value="item.inventoryStatus"></Tag>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="pt-6">
+                                  <div class="flex flex-row justify-between items-start gap-2">
+                                      <div>
+                                          <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{ item.id }}</span>
+                                          <div class="text-lg font-medium mt-1">{{ item.type }}</div>
+                                      </div>
+                                      <div class="bg-surface-100 p-1" style="border-radius: 30px">
+                                          <div class="bg-surface-0 flex items-center gap-2 justify-center py-1 px-2" style="border-radius: 30px; box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.04), 0px 1px 2px 0px rgba(0, 0, 0, 0.06)">
+                                              <span class="text-surface-900 font-medium text-sm">{{ item.quantity }}</span>
+                                              <i class="pi pi-star-fill text-yellow-500"></i>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="flex flex-col gap-6 mt-6">
+                                      <span class="text-2xl font-semibold">${{ item.price }}</span>
+                                      <div class="flex gap-2">
+                                          <Button icon="pi pi-shopping-cart" label="Buy Now" :disabled="item.inventoryStatus === 'OUTOFSTOCK'" class="flex-auto whitespace-nowrap"></Button>
+                                          <Button icon="pi pi-heart" outlined></Button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </template>
+          </DataView>
           </template>
-        </Card>
       </div>
-    </section>
+  
 
-    <section class="faq-section py-8 px-4 bg-yellow-50">
-      <h2 class="text-3xl text-center text-primary mb-6">Perguntas Frequentes</h2>
-      <Accordion :multiple="true" :activeIndex="[0]">
-        <AccordionTab v-for="(faq, index) in faqs" :key="index" :header="faq.question">
-          <p>{{ faq.answer }}</p>
-        </AccordionTab>
-      </Accordion>
-    </section>
+      <Carousel :value="products" :numVisible="3" :numScroll="1" :responsiveOptions="responsiveOptions">
+          <template #item="slotProps">
+            <Card class="m-4 rounded-xl border border-gray-200 shadow-md transition-transform hover:scale-105">
+              
+              <!-- Imagem do produto -->
+              <template #header>
+                <img
+                  :src="`http://localhost:8080/static/${slotProps.data.image}`"
+                  :alt="slotProps.data.type"
+                  class="w-full h-64 object-cover rounded-t-xl"
+                />
+              </template>
+
+              <!-- Título do produto -->
+              <template #title>
+                <h3 class="text-lg font-bold text-center text-gray-800 mt-4">
+                  {{ slotProps.data.type }}
+                </h3>
+              </template>
+
+              <!-- Descrição e preço -->
+              <template #content>
+                <p class="text-sm text-gray-600 text-center px-4 mt-2">
+                  {{ slotProps.data.description }}
+                </p>
+                <div class="text-center mt-3 font-semibold text-xl text-rose-500">
+                  R$ {{ slotProps.data.price }}/dia
+                </div>
+              </template>
+
+              <!-- Rodapé com ações -->
+              <template #footer>
+                <div class="flex justify-center items-center gap-4 mt-4 mb-4 px-4">
+                  <Button
+                    :icon="isProductSelected(slotProps.data) ? 'pi pi-check' : 'pi pi-plus'"
+                    @click="toggleItem(slotProps.data)"
+                    :class="[
+                      isProductSelected(slotProps.data)
+                        ? 'p-button-success p-button-outlined'
+                        : 'p-button-success'
+                    ]"
+                    class="w-10 h-10 p-0 flex items-center justify-center rounded-full"
+                  />
+
+                  <InputText
+                    v-model="slotProps.data.quantity"
+                    type="number"
+                    :min="0"
+                    :max="slotProps.data.quantity"
+                    placeholder="Qtd"
+                    class="w-20 h-10 text-center border border-gray-300 rounded-md"
+                  />
+                </div>
+              </template>
+              
+            </Card>
+          </template>
+        </Carousel>
+
+
+      <div>
+        <FormAndCalendar />
+      </div>
+    
+    
+    <FAQ />
+    
 
     <footer class="footer bg-primary text-white text-center py-4">
       <p>Castro Brinquedos &copy; {{ new Date().getFullYear() }}</p>
@@ -108,6 +261,7 @@
           <label for="phone">Celular</label>
           <InputText id="phone" v-model="contactForm.phone" />
         </div>
+
         <div class="field">
           <label for="message">Mensagem</label>
           <Textarea id="message" v-model="contactForm.message" rows="3" />
@@ -119,9 +273,13 @@
       </template>
     </Dialog>
   </div>
+  <FooterBar />
 </template>
 
 <script>
+
+import DataView from 'primevue/dataview';
+import Timeline from 'primevue/timeline';
 import Calendar from 'primevue/calendar';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
@@ -134,10 +292,18 @@ import Menubar from 'primevue/menubar';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import axios from 'axios';
+import MenuTopBar from './components/MenuTopBar.vue';
+import FooterBar from './components/FooterBar.vue';
+import FormAndCalendar from './components/FormAndCalendar.vue';
+import FAQ from './pages/FAQ.vue';
+import { useAmountStore } from './store';
+import { mapState, mapWritableState } from 'pinia';
 
 export default {
   name: 'App',
   components: {
+    Timeline,
+    DataView,
     Calendar,
     Dialog,
     Button,
@@ -148,116 +314,156 @@ export default {
     Toast,
     Menubar,
     Accordion,
-    AccordionTab
+    AccordionTab,
+    MenuTopBar,
+    FooterBar,
+    FormAndCalendar,
+    FAQ,
   },
   data() {
-    const today = new Date();
-    const nextYear = new Date();
-    nextYear.setFullYear(today.getFullYear() + 1);
-
+    
     return {
+      position: 'center',
+      visible: false,
+      deleteItem: '',
+      layout: 'grid',
+      options: ['list', 'grid'],
+      ProductSelected: false,
       showContactDialog: false,
-      selectedDate: null,
-      minDate: today,
-      maxDate: nextYear,
       contactForm: {
         name: '',
         email: '',
         phone: '',
         message: '',
       },
-      disabledDates: [],
       selectedProducts: [],
-      products2: [],
-      products: [
-        { id: 1, name: 'Pula-Pula - Grande', description: 'Pula-pula grande para crianças de até 12 anos', price: 150, image: 'src/assets/pula_pula.jpg', quantity: 0},
-        { id: 2, name: 'Casa de Bolinhas - Pequena', description: '2x2m com 5000 bolinhas', price: 120, image: 'src/assets/piscina_bolinha.jpg', quantity: 0 },
-        { id: 3, name: 'Tobogã Inflável', description: 'Com escorregador, 3m de altura', price: 200, image: 'src/assets/toboga.jpg', quantity: 0 },
-        { id: 4, name: 'Casa de Bolinhas - Grande', description: 'Com escorregador, 3m de altura', price: 200, image: 'src/assets/piscina_bolinha.jpg', quantity: 0 },
-        { id: 5, name: 'Pula-Pula - Médio', description: 'Com escorregador, 3m de altura', price: 200, image: 'src/assets/pula_pula.jpg', quantity: 0 },
-      ],
-      testimonials: [
-        { name: 'Joana Silva', message: 'Excelente serviço! As crianças se divertiram demais.' },
-        { name: 'Carlos Mendes', message: 'Ótima qualidade dos brinquedos e atendimento muito atencioso.' },
-        { name: 'Ana Paula', message: 'Tudo chegou no horário e foi super tranquilo. Recomendo!' },
-      ],
-      faqs: [
-        { question: 'Com quanto tempo de antecedência preciso reservar?', answer: 'Recomendamos pelo menos 1 semana antes do evento para garantir a disponibilidade.' },
-        { question: 'O transporte está incluso no valor?', answer: 'Sim, para eventos dentro da cidade. Fora da cidade pode haver taxa adicional.' },
-        { question: 'Como faço o pagamento?', answer: 'Aceitamos PIX, transferência bancária e cartão de crédito.' },
-      ],
-      menuItems: [
-        { label: 'Início', command: () => this.scrollToSection('products') },
-        { label: 'Contato', command: () => (this.showContactDialog = true) },
-        { label: 'WhatsApp', icon: 'pi pi-whatsapp', url: 'https://wa.me/55000000000' },
-        { label: 'Instagram', icon: 'pi pi-instagram', url: 'https://instagram.com/castrobrinquedos' }
-      ],
+      products: [],
+      productsConst: [],
       isDark: false,
     };
   },
   methods: {
-    scrollToSection(refName) {
-      const section = this.$refs[refName];
-      if (section) section.scrollIntoView({ behavior: 'smooth' });
+    beforeContactForm(){
+      this.$toast.add({
+          severity: 'info',
+          summary: 'Importante',
+          detail: `Por favor, adicione algum brinquedo para poder seguir para o formulário de orçamento.`,
+          life: 5000,
+        });
     },
+    openPosition(pos) {
+            this.position = pos;
+            this.visible = true;
+    },
+    
     toggleItem(product) {
       const index = this.selectedProducts.findIndex(p => p.id === product.id);
-      if (index > -1) this.selectedProducts.splice(index, 1);
-      else this.selectedProducts.push(product);
+      if (index > -1) {
+        
+        // produto já está selecionado → remover
+        this.selectedProducts.splice(index, 1);
+        this.ProductSelected = false; 
+        debugger;
+
+        const deleteDate = this.disabledDates.filter(item => item.product_type === product.type);
+        deleteDate.forEach((item) => {
+          this.disabledDates.pop(item.product_type);
+
+        })
+
+
+      } else {
+        // produto não está selecionado → adicionar
+        this.selectedProducts.push(product);
+        this.ProductSelected = true;
+      }
+
+      // Atualiza valor total
+      let totalAmount = 0.0;
+      this.selectedProducts.forEach((product) => {
+        totalAmount += product.price;
+      });
+      this.amount = totalAmount;
+      this.storeProducts = this.selectedProducts;
+
+      // Atualizar datas desabilitadas
+      if (this.ProductSelected) {
+        
+        for (let p of this.disableDates) {
+          if (p.product === product.type) { 
+            const productsFiltered = this.productsConst.filter(item => item.type === p.product)
+            if(productsFiltered[0].quantity - product.quantity === 0){
+              
+              const date = new Date(p.date);
+              date.setHours(0, 0, 0, 0);
+              let objDate = {'date': date, 'product_type': product.type}
+              // add como obj para poder remover do pop
+              this.disabledDates.push(objDate);
+              
+            }
+            
+          }
+        }
+      } else {
+        
+        this.deleteItem = this.disabledDates.filter(item => item.product_type === product.type);
+        
+
+      }
     },
+
     isProductSelected(product) {
+      // const iconElement = buttonElement.querySelector('.pi');
+      // if (iconElement.classList.contains('pi-check')) {
+      //   this.ProductSelected = true;  
+
+      //   // é o check
+      // } else if (iconElement.classList.contains('pi-plus')) {
+      //   this.ProductSelected = false;  
+
+      // }
+      // this.deleteItem = this.disabledDates.filter(item => item.product === 'Pula Pula Médio');
+
+      // // this.disabledDates.pop(deleteItem);
       return this.selectedProducts.some(p => p.id === product.id);
     },
-    toggleTheme() {
-      this.isDark = !this.isDark;
-      document.body.classList.toggle('p-component-overlay-dark', this.isDark);
-      document.body.classList.toggle('dark', this.isDark);
-    },
-    submitContactForm() {
-      const amount = this.selectedProducts.reduce((total, produto) => total + produto.price, 0);
-      const userData = {
-        ...this.contactForm,
-        date: this.selectedDate,
-        amount,
-        products: this.selectedProducts,
-      };
-      const response = axios.post('http://localhost:8080/criar', userData);
-      this.contactForm = { name: '', email: '', phone: '', message: '' };
-      this.showContactDialog = false;
-
-      if(response){
-        this.$toast.add({
-          severity: 'success',
-          summary: 'Sucesso',
-          detail: 'Seu cadastro foi realizado com sucesso!',
-          life: 3000
-        });
-      }
-      else{
-        this.$toast.add({
-          severity: 'error',
-          summary: 'Erro',
-          detail: 'Ocorreu um erro ao realizar o envio do formulário.',
-          life: 3000
-        });
-      }
-      
-    },
+    
+    
   },
+  watch:{
+    handler(){
+    }
+  },
+  computed: {
+    ...mapState(useAmountStore, [
+        'disableDates'
+      ]),
+
+    ...mapWritableState(useAmountStore, ['amount', 'storeProducts', 'disabledDates']),
+
+    // calculateAmount(){
+    //   this.amount = this.selectedProducts.reduce((total, produto) => total + produto.price, 0);
+    //   this.products = this.selectedProducts;
+    // },
+
+
+  },
+
+
   async beforeMount(){
-    this.products2 = (await axios.get('http://localhost:8080/products')).data;
-    const response = await axios.get('http://localhost:8080/unavailable/dates');
+    this.products = (await axios.get('http://localhost:8080/products')).data;
+    this.productsConst = (await axios.get('http://localhost:8080/products')).data;
+    // const response = await axios.get('http://localhost:8080/unavailable/dates');
 
-    this.disabledDates = response.data.map(item => {
-      const date = new Date(item.date);
-      date.setHours(date.getHours() + 3);
-      return date
-    });
+    // this.disabledDates = response.data.map(item => {
+      
+    //   const date = new Date(item.date);
+    //   date.setHours(date.getHours() + 3);
+    //   return date
+    // });
 
-
-
-    console.log(tgisproducts2);
   }
+  
 };
 </script>
 
