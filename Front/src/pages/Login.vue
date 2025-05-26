@@ -4,7 +4,7 @@
     style="background-image: url('https://fqjltiegiezfetthbags.supabase.co/storage/v1/object/public/block.images/blocks/signin/signin-glass.jpg')"
   >
     <div class="backdrop-blur-xl bg-white/10 border border-white/10 rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full space-y-8">
-      <!-- Logo -->
+      
       <div class="flex flex-col items-center gap-4">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 text-white" viewBox="0 0 33 32" fill="currentColor">
           <path
@@ -20,7 +20,7 @@
         </p>
       </div>
 
-      <!-- Form -->
+      
       <form class="space-y-6">
         <div class="relative">
           <i class="pi pi-user absolute left-4 top-1/2 transform -translate-y-1/2 text-white/60"></i>
@@ -46,7 +46,7 @@
         />
       </form>
 
-      <!-- Forgot Password -->
+     
       <div class="text-center">
         <a href="#" class="text-white/70 text-sm hover:text-white underline">Forgot Password?</a>
       </div>

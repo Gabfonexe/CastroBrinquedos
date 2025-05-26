@@ -1,58 +1,66 @@
 <template>
-  <header class="bg-white dark:bg-gray-900 shadow-md rounded-2xl p-4 mb-6">
+  <header class="bg-white dark:bg-gray-900 shadow-md rounded-2xl px-6 py-4 mb-6 transition-colors duration-300">
     <div class="flex items-center justify-between">
       <!-- Logo -->
-      <img src="/src/assets/logo_castro.png" alt="Logo" class="w-44" />
+      <img src="/src/assets/logo_castro.png" alt="Logo" class="w-40 sm:w-44 transition-all duration-300" />
 
       <!-- Navegação Desktop -->
-      <nav class="hidden sm:flex gap-6 text-gray-800 dark:text-gray-200 font-semibold items-center">
+      <nav class="hidden sm:flex gap-8 items-center text-gray-800 dark:text-gray-200 font-semibold text-base">
         <template v-for="item in menuItems" :key="item.label">
           <a
             v-if="item.url"
             :href="item.url"
             target="_blank"
             rel="noopener noreferrer"
-            class="hover:text-blue-600 transition-colors duration-200 flex items-center gap-1"
+            class="flex items-center gap-2 hover:text-blue-600 transition-colors duration-300"
           >
-            <i :class="item.icon" v-if="item.icon"></i> {{ item.label }}
+            <i :class="item.icon" v-if="item.icon"></i>
+            {{ item.label }}
           </a>
           <button
             v-else
             @click="item.command"
-            class="hover:text-blue-600 transition-colors duration-200 flex items-center gap-1"
+            class="flex items-center gap-2 hover:text-blue-600 transition-colors duration-300"
           >
-            <i :class="item.icon" v-if="item.icon"></i> {{ item.label }}
+            <i :class="item.icon" v-if="item.icon"></i>
+            {{ item.label }}
           </button>
         </template>
       </nav>
 
       <!-- Botão mobile -->
-      <Button
-        icon="pi pi-bars"
-        class="sm:hidden p-button-rounded p-button-text text-gray-700 dark:text-gray-300 hover:text-blue-500"
+      <button
+        class="sm:hidden text-gray-700 dark:text-gray-300 hover:text-blue-500 transition duration-300 focus:outline-none"
         @click="toggleMobileMenu"
-      />
+      >
+        <i class="pi pi-bars text-2xl"></i>
+      </button>
     </div>
 
     <!-- Navegação Mobile -->
-    <transition name="fade">
-      <div v-if="mobileMenuOpen" class="sm:hidden mt-4 space-y-3">
+    <transition name="fade" mode="out-in">
+      <div
+        v-if="mobileMenuOpen"
+        class="sm:hidden mt-4 space-y-3 animate-slide-down"
+      >
         <template v-for="item in menuItems" :key="item.label">
           <a
             v-if="item.url"
             :href="item.url"
             target="_blank"
             rel="noopener noreferrer"
-            class="block text-gray-800 dark:text-gray-200 hover:text-blue-600 transition-colors"
+            class="block px-2 py-2 rounded-md text-gray-800 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-gray-800 transition-colors"
           >
-            <i :class="item.icon" v-if="item.icon"></i> {{ item.label }}
+            <i :class="item.icon" v-if="item.icon"></i>
+            {{ item.label }}
           </a>
           <button
             v-else
             @click="item.command"
-            class="block w-full text-left text-gray-800 dark:text-gray-200 hover:text-blue-600 transition-colors"
+            class="block w-full text-left px-2 py-2 rounded-md text-gray-800 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-gray-800 transition-colors"
           >
-            <i :class="item.icon" v-if="item.icon"></i> {{ item.label }}
+            <i :class="item.icon" v-if="item.icon"></i>
+            {{ item.label }}
           </button>
         </template>
       </div>
@@ -76,22 +84,24 @@ export default {
       showContactDialog: false,
       menuItems: [
         {
-          label: 'Início',
-          command: () => this.scrollToSection('products'),
-        },
-        {
-          label: 'Contato',
-          command: () => (this.showContactDialog = true),
-        },
-        {
           label: 'WhatsApp',
           icon: 'pi pi-whatsapp',
-          url: 'https://wa.me/55000000000',
+          url: 'https://wa.me/5521968843651',
         },
         {
           label: 'Instagram',
           icon: 'pi pi-instagram',
           url: 'https://instagram.com/castrobrinquedos',
+        },
+        {
+          label: 'Facebook',
+          icon: 'pi pi-facebook',
+          url: 'https://instagram.com/castrobrinquedos',
+        },
+        {
+          label: 'Home',
+          icon: 'pi pi-home',
+          url: 'landPage.html',
         },
       ],
     };
@@ -111,12 +121,18 @@ export default {
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
+/* Animação de deslizamento para baixo no menu mobile */
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
+.animate-slide-down {
+  animation: slideDown 0.3s ease-out forwards;
 }
 </style>

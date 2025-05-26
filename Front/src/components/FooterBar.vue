@@ -10,9 +10,9 @@
           Qualidade, segurança e alegria garantidas.
         </p>
         <div class="flex gap-4">
-          <Button icon="pi pi-instagram" severity="secondary" text rounded class="hover:scale-110 transition-transform" aria-label="Instagram" />
-          <Button icon="pi pi-whatsapp" severity="success" text rounded class="hover:scale-110 transition-transform" aria-label="Whatsapp" />
-          <Button icon="pi pi-facebook" severity="info" text rounded class="hover:scale-110 transition-transform" aria-label="Facebook" />
+          <Button  icon="pi pi-instagram"  severity="secondary" text rounded class="hover:scale-110 transition-transform" aria-label="Instagram" />
+          <Button @click="goToWhatsapp" icon="pi pi-whatsapp" severity="success" text rounded class="hover:scale-110 transition-transform" aria-label="Whatsapp" />
+          <Button @click="goToFacebook" icon="pi pi-facebook" severity="info" text rounded class="hover:scale-110 transition-transform" aria-label="Facebook" />
         </div>
       </div>
 
@@ -65,6 +65,13 @@
     <div class="text-center text-xs text-gray-500">
       © {{ new Date().getFullYear() }} <span class="font-semibold">Castro Brinquedos</span>. Todos os direitos reservados.
     </div>
+    <div class="text-center text-xs text-gray-500">
+      <span>Desenvolvido por <strong>Gabriel Fonseca</strong>.</span>
+      <a href="mailto:gabrielfonseca.devback@gmail.com" class="text-sm text-xl hover:text-primary">
+        <span class="text-sm"> gabrielfonseca.devback@gmail.com </span>
+        <i class="pi pi-envelope mr-2" ></i>
+        </a>
+    </div>
   </footer>
 </template>
 
@@ -81,6 +88,21 @@ export default {
     Divider,
     Button
     
+  },
+
+
+  methods:{
+
+    goToFacebook(){
+      window.open('https://instagram.com/castrobrinquedos', '_blank');
+
+    },
+    goToInstagram(){
+      window.open('https://instagram.com/castrobrinquedos', '_blank');
+    },
+    goToWhatsapp(){
+      window.open('https://wa.me/5521968843651', '_blank');
+    },
   }
 }
 

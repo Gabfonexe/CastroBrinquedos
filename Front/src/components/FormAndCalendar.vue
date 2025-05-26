@@ -4,10 +4,10 @@
       <template #content>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 p-6 lg:p-10">
 
-          <!-- Bloco do Calendário -->
+
           <div>
             <h2 class="text-3xl font-bold text-gray-800 mb-6">📅 Escolha a data do seu evento</h2>
-            <div class="rounded-xl border border-gray-200 p-4 shadow-sm bg-white">
+            <div class="rounded-xl border border-gray-200 p-1 shadow-sm bg-white" style="width: auto;">
               <Calendar
                 v-model="selectedDate"
                 :inline="true"
@@ -15,12 +15,13 @@
                 :maxDate="maxDate"
                 :disabledDates="newDisableDates"
                 class="w-full p-calendar"
-                showWeek
+                :locale="pt"
+                
               />
             </div>
           </div>
 
-          <!-- Bloco do Formulário -->
+
           <div>
             <h2 class="text-3xl font-bold text-gray-800 mb-6">📩 Solicite seu orçamento</h2>
             <div class="space-y-4">
@@ -76,6 +77,8 @@ import axios from 'axios';
 import { mapState } from 'pinia';
 import { mapWritableState } from 'pinia';
 import { useAmountStore } from '../store';
+import { detail, summary } from '@primeuix/themes/aura/toast';
+
 
 export default{
 
@@ -94,6 +97,7 @@ export default{
         nextYear.setFullYear(today.getFullYear() + 1);
 
         return{
+          
             name: '',
             email: '',
             phone: '',
@@ -156,6 +160,17 @@ export default{
         },
         submitContactForm() {
             console.log('disabledDates: ', this.disabledDates);
+            debugger;
+            if(this.storeProducts.some(product => 
+              product.selectedQuantity === 0 )){
+                this.$toast.add({
+                  severity: 'info',
+                  summary: 'Selecione a Quantidade',
+                  detail: `É necessário escolher a quantidade do brinquedo.`,
+                  life: 5000,
+                })
+                return
+              }
 
             if(this.selectedDate === null || this.storeProducts.length === 0){
                 if(this.storeProducts.length === 0){
@@ -197,7 +212,7 @@ export default{
                 this.$toast.add({
                 severity: 'success',
                 summary: 'Sucesso',
-                detail: 'Seu cadastro foi realizado com sucesso!',
+                detail: 'Seu pedido foi enviado com sucesso!',
                 life: 3000
                 });
             }
