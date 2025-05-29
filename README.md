@@ -98,8 +98,8 @@ Todas as alterações no banco de dados estão versionadas em `migrations/versio
 
 ## 🌐 Demonstração
 
-> *\[https://castro-brinquedos.vercel.app/]*
-> *\[https://castro-brinquedos-1r7b.vercel.app/]*
+> *\[https://castro-brinquedos.vercel.app]*
+> *\[https://castro-brinquedos-1r7b.vercel.app]*
 
 ---
 
