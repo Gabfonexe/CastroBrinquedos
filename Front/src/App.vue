@@ -7,6 +7,7 @@
   <div class="app-container">
 
 
+
     <Toast />
     
     <MenuTopBar />
@@ -36,7 +37,6 @@
       </div>
     </div>
 
-    <!-- Dialog de Informações -->
     <Dialog 
       v-model:visible="visible" 
       header="Como funciona o aluguel?" 
@@ -90,7 +90,7 @@
           <Card
             class="m-4 rounded-2xl border border-gray-200 shadow-lg transition-transform hover:scale-[1.03] bg-white"
           >
-            <!-- Imagem do produto -->
+          
             <template #header>
               <img
                 :src="`http://localhost:8080/static/${slotProps.data.image}`"
@@ -99,14 +99,14 @@
               />
             </template>
 
-            <!-- Título do produto -->
+            
             <template #title>
               <h3 class="text-base sm:text-lg font-bold text-center text-gray-800 mt-3">
                 {{ slotProps.data.type }}
               </h3>
             </template>
 
-            <!-- Descrição e preço -->
+            
             <template #content>
               <p class="text-sm text-gray-600 text-center px-3 mt-2">
                 {{ slotProps.data.description }}
@@ -116,7 +116,7 @@
               </div>
             </template>
 
-            <!-- Rodapé com ações -->
+            
             <template #footer>
               <div class="flex flex-col sm:flex-row justify-center items-center gap-3 mt-4 mb-4 px-4">
                 <Button
@@ -134,7 +134,7 @@
                   v-model="slotProps.data.selectedQuantity"
                   type="number"
                   :min="1"
-                  :max="slotProps.data.quantity"
+                  :max="slotProps.data.static_quantity"
                   placeholder="Qtd"
                   class="w-20 h-10 text-center border border-gray-300 rounded-md"
                   @input="validateQuantity(slotProps)"
@@ -210,6 +210,9 @@ import FAQ from './pages/FAQ.vue';
 import { useAmountStore } from './store';
 import { mapState, mapWritableState } from 'pinia';
 
+
+
+
 export default {
   name: 'App',
   components: {
@@ -229,10 +232,19 @@ export default {
     FooterBar,
     FormAndCalendar,
     FAQ,
+
+
   },
   data() {
     
     return {
+      navigation: [
+      { name: 'Product', href: '#' },
+      { name: 'Features', href: '#' },
+      { name: 'Marketplace', href: '#' },
+      { name: 'Company', href: '#' },
+      ],
+      mobileMenuOpen: false,
       position: 'center',
       visible: false,
       deleteItem: '',
@@ -249,7 +261,7 @@ export default {
   methods: {
      validateQuantity(product) {
       const val = product.selectedQuantity;
-      const max = product.quantity;
+      const max = product.static_quantity;
 
       if (val === null || val === '') return;
 
@@ -279,13 +291,14 @@ export default {
 
       const index = this.selectedProducts.findIndex(p => p.id === product.id);
       if (index > -1) {
-        
+
         // produto já está selecionado → remover
         this.selectedProducts.splice(index, 1);
         this.ProductSelected = false; 
-
         const deleteDate = this.disabledDates.filter(item => item.product_type === product.type);
         deleteDate.forEach((item) => {
+          
+
           this.disabledDates.pop(item.product_type);
 
         })
@@ -296,6 +309,8 @@ export default {
         // produto não está selecionado → adicionar
         this.selectedProducts.push(product);
         this.ProductSelected = true;
+        debugger;
+     
       }
 
       // Atualiza valor total
@@ -308,13 +323,25 @@ export default {
 
       // Atualizar datas desabilitadas
       if (this.ProductSelected) {
-        
+
+        if(product.selectedQuantity >  product.static_quantity){
+              this.$toast.add({
+                severity: 'error',
+                summary: 'Importante',
+                detail:  `O Brinquedo: `+ product.type + ` possui `  + product.static_quantity + ` unidade(s) disponíveis`,
+                life: 5000,
+              })
+              this.ProductSelected = false;
+              return;
+            }
+
         for (let p of this.disableDates) {
-           
+          const productsFiltered = this.productsConst.filter(item => item.type === p.product)
+
           if (p.product === product.type) { 
-            const productsFiltered = this.productsConst.filter(item => item.type === p.product)
-            if(productsFiltered[0].quantity - product.selectedQuantity === 0){
-              
+
+            if(productsFiltered[0].static_quantity - product.selectedQuantity === 0){
+       
               const date = new Date(p.date);
               date.setHours(0, 0, 0, 0);
               let objDate = {'date': date, 'product_type': product.type}

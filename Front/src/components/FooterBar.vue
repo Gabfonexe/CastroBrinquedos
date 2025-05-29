@@ -2,7 +2,7 @@
   <footer class="bg-gray-100 text-gray-700 py-12 px-6">
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
 
-      <!-- Coluna 1: Marca e redes sociais -->
+
       <div>
         <h3 class="text-2xl font-bold text-primary mb-4">Castro Brinquedos</h3>
         <p class="text-sm leading-relaxed mb-6">
@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <!-- Coluna 2: Links rápidos -->
+
       <div>
         <h3 class="text-2xl font-bold text-primary mb-4">Links Rápidos</h3>
         <ul class="space-y-3 border-l-4 border-primary pl-5">
@@ -47,7 +47,7 @@
         </ul>
       </div>
 
-      <!-- Coluna 3: Serviços -->
+
       <div>
         <h3 class="text-2xl font-bold text-primary mb-4">Nossos Serviços</h3>
         <ul class="text-sm space-y-3 pl-1">

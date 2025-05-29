@@ -98,7 +98,7 @@ Todas as alterações no banco de dados estão versionadas em `migrations/versio
 
 ## 🌐 Demonstração
 
-> *\[Insira aqui screenshots ou link para o projeto hospedado]*
+> *\[]*
 
 ---
 
@@ -110,4 +110,4 @@ Se você gostou do projeto ou quer saber mais, sinta-se à vontade para entrar e
 
 ---
 
-**Desenvolvido com ❤️ por \[Seu Nome]**
+**Desenvolvido com ❤️ por \[Gabriel Fonseca]**

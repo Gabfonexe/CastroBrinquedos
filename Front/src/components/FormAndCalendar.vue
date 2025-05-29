@@ -1,13 +1,12 @@
 <template>
   <section class="calendar-section py-16 px-4 bg-gradient-to-b from-white to-slate-50">
-    <Card class="max-w-6xl mx-auto rounded-2xl shadow-2xl border border-gray-200">
+    <Card class="max-w-6xl mx-auto rounded-2xl shadow-2xl border border-gray-200 bg-white transition-all duration-300 ease-in-out hover:shadow-3xl">
       <template #content>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 p-6 lg:p-10">
 
-
           <div>
-            <h2 class="text-3xl font-bold text-gray-800 mb-6">📅 Escolha a data do seu evento</h2>
-            <div class="rounded-xl border border-gray-200 p-1 shadow-sm bg-white" style="width: auto;">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">📅 Escolha uma data</h2>
+            <div class="border border-gray-300 rounded-xl p-4 shadow-sm bg-white">
               <Calendar
                 v-model="selectedDate"
                 :inline="true"
@@ -16,35 +15,42 @@
                 :disabledDates="newDisableDates"
                 class="w-full p-calendar"
                 :locale="pt"
-                
-              />
+              >
+                <template #dateTemplate="{ date }">
+                  <div
+                    v-tooltip="getTooltip(date)"
+                    class="w-full h-full flex items-center justify-center"
+                  >
+                    {{ date.day }}
+                  </div>
+                </template>
+              </Calendar>
             </div>
           </div>
-
 
           <div>
             <h2 class="text-3xl font-bold text-gray-800 mb-6">📩 Solicite seu orçamento</h2>
             <div class="space-y-4">
               <InputText
-                placeholder="Nome"
+                placeholder="👤 Nome"
                 id="name"
                 v-model="this.name"
                 class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
               <InputText
-                placeholder="Email"
+                placeholder="📧 Email"
                 id="email"
                 v-model="this.email"
                 class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
               <InputText
-                placeholder="Celular"
+                placeholder="📱 Celular"
                 id="phone"
                 v-model="this.phone"
                 class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
               <Textarea
-                placeholder="Mensagem"
+                placeholder="💬 Mensagem"
                 id="message"
                 v-model="this.message"
                 rows="4"
@@ -53,8 +59,19 @@
             </div>
 
             <div class="flex justify-end gap-3 mt-6">
-              <Button label="Cancelar" severity="secondary" @click="cancelForm" class="px-5 py-2 text-sm" />
-              <Button label="Enviar" icon="pi pi-send" @click="submitContactForm" class="px-5 py-2 text-sm" />
+              <Button 
+                label="Cancelar" 
+                severity="secondary" 
+                @click="cancelForm" 
+                class="px-5 py-2 text-sm transition-all duration-300 ease-in-out hover:shadow-md" 
+              />
+              <Button 
+                :label="isSubmitting ? 'Enviando...' : 'Enviar'" 
+                icon="pi pi-send" 
+                :disabled="isSubmitting" 
+                @click="submitContactForm" 
+                class="px-5 py-2 text-sm transition-all duration-300 ease-in-out hover:shadow-md" 
+              />
             </div>
           </div>
 
@@ -88,7 +105,8 @@ export default{
         Button,
         Calendar,
         InputText,
-        Textarea
+        Textarea,
+        
     },
 
     data(){
@@ -151,6 +169,16 @@ export default{
     },
 
     methods:{
+
+        getTooltip(date){
+          debugger;
+          const dates =  this.newDisableDates.filter((findDate) => {
+            findDate.date === date && findDate.product === this.storeProducts.filter((product) => {product === findDate.product});
+          });
+          return dates.reason;
+
+        },
+
         cancelForm(){
             this.name = '';
             this.email = '';
@@ -159,8 +187,7 @@ export default{
             this.message = '';
         },
         submitContactForm() {
-            console.log('disabledDates: ', this.disabledDates);
-            debugger;
+            console.log('disabledDates: ', this.disabledDates); 
             if(this.storeProducts.some(product => 
               product.selectedQuantity === 0 )){
                 this.$toast.add({
@@ -171,6 +198,15 @@ export default{
                 })
                 return
               }
+            if(this.storeProducts.some(product => product.selectedQuantity > product.static_quantity)){
+              this.$toast.add({
+                  severity: 'error',
+                  summary: 'A quantidade está errada',
+                  detail: `O pedido excedeu a quantidade de brinquedos disponíveis.`,
+                  life: 5000,
+                })
+                return
+            }
 
             if(this.selectedDate === null || this.storeProducts.length === 0){
                 if(this.storeProducts.length === 0){

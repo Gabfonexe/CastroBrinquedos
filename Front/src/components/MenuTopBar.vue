@@ -1,10 +1,9 @@
 <template>
   <header class="bg-white dark:bg-gray-900 shadow-md rounded-2xl px-6 py-4 mb-6 transition-colors duration-300">
     <div class="flex items-center justify-between">
-      <!-- Logo -->
+
       <img src="/src/assets/logo_castro.png" alt="Logo" class="w-40 sm:w-44 transition-all duration-300" />
 
-      <!-- Navegação Desktop -->
       <nav class="hidden sm:flex gap-8 items-center text-gray-800 dark:text-gray-200 font-semibold text-base">
         <template v-for="item in menuItems" :key="item.label">
           <a
@@ -28,7 +27,7 @@
         </template>
       </nav>
 
-      <!-- Botão mobile -->
+      
       <button
         class="sm:hidden text-gray-700 dark:text-gray-300 hover:text-blue-500 transition duration-300 focus:outline-none"
         @click="toggleMobileMenu"
@@ -37,7 +36,6 @@
       </button>
     </div>
 
-    <!-- Navegação Mobile -->
     <transition name="fade" mode="out-in">
       <div
         v-if="mobileMenuOpen"
