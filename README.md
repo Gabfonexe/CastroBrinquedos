@@ -1,4 +1,4 @@
-# ✨ Projeto de Web Service para Empresa de Locação de Brinquedos
+# ✨ Projeto Web Service para Empresa de Locação de Brinquedos
 
 Este projeto foi desenvolvido para atender a uma demanda real de mercado, oferecendo uma solução completa para o gerenciamento de uma empresa especializada em locação de brinquedos. Pensado e criado do zero por mim, ele surgiu como resposta à necessidade de um amigo empreendedor e, desde então, tem evoluído continuamente, tornando-se um sistema robusto, escalável e com foco total na usabilidade.
 
@@ -32,7 +32,11 @@ O sistema foi criado inicialmente como um simples CRUD para controle interno, ma
 
 ### 🎨 Estrutura do Projeto
 
-#### ✨ Landing Page com Vue.js
+#### ✨ Landing Page com JavaScript/Ts, Tailwind CSS, HTML
+
+A landing page foi criada essencialmente com **JavaScript**. Realizei algumas aplicações de design, estéticas, UI/UX. Porém, por ser uma landing Page, não possui uma lógica tão robusta e complexa como na página de orçamento realizada em Vue.
+
+#### ✨ Front - Web Service com VueJs - Vue3 (options API), vue router, primevue, pinia, vite  
 
 A landing page foi criada com **Vue.js** como um desafio pessoal e com foco em escalabilidade e manutenção. A modularização foi uma escolha estratégica, mesmo sendo uma página relativamente simples. Os brinquedos exibidos no carrossel vêm diretamente do banco de dados.
 
