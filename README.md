@@ -1,4 +1,4 @@
-# ✨ Projeto de Apoio para Empresa de Locação de Brinquedos
+# ✨ Projeto de Web Service para Empresa de Locação de Brinquedos
 
 Este projeto foi desenvolvido para atender a uma demanda real de mercado, oferecendo uma solução completa para o gerenciamento de uma empresa especializada em locação de brinquedos. Pensado e criado do zero por mim, ele surgiu como resposta à necessidade de um amigo empreendedor e, desde então, tem evoluído continuamente, tornando-se um sistema robusto, escalável e com foco total na usabilidade.
 
