@@ -112,4 +112,4 @@ Se você gostou do projeto ou quer saber mais, sinta-se à vontade para entrar e
 
 ---
 
-**Desenvolvido com ❤️ por \[Gabriel Fonseca]**
+**Desenvolvido  por Gabriel Fonseca**
