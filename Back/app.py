@@ -9,6 +9,8 @@ from flask_migrate import Migrate
 from src.extensions.extensions import db
 from src.model.date import Dates
 from src.model.user import Users
+from src.model.calendar import Calendar
+from src.model.products import Products
 from admin import init_app as init_admin
 from src.controller import flask_admin 
 
@@ -25,8 +27,8 @@ app.debug = True
 
 app.config.from_object(config.Config)
 app.config['SQLALCHEMY_ECHO'] = True
-ma = Marshmallow(app)
 db.init_app(app)
+ma = Marshmallow(app)
 migrate = Migrate(app, db)
 
 api = Api(app)

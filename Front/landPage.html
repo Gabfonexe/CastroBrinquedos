@@ -1,0 +1,796 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Castro Brinquedos - Aluguel de Brinquedos para Festas</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Fredoka+One&display=swap');
+        
+        :root {
+            --primary: #8A4FFF;
+            --secondary: #FF5252;
+            --accent1: #FFD600;
+            --accent2: #4F8AFF;
+            --light: #FFFFFF;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        .fun-font {
+            font-family: 'Fredoka One', cursive;
+        }
+        
+        .bg-primary { background-color: var(--primary); }
+        .bg-secondary { background-color: var(--secondary); }
+        .bg-accent1 { background-color: var(--accent1); }
+        .bg-accent2 { background-color: var(--accent2); }
+        
+        .text-primary { color: var(--primary); }
+        .text-secondary { color: var(--secondary); }
+        .text-accent1 { color: var(--accent1); }
+        .text-accent2 { color: var(--accent2); }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #7340e0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(138, 79, 255, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e04747;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 82, 82, 0.3);
+        }
+        
+        .card {
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #8A4FFF 0%, #4F8AFF 100%);
+            min-height: 500px;
+        }
+        
+        .hero-shape {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
+        
+        .hero-shape svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 70px;
+        }
+        
+        .hero-shape .shape-fill {
+            fill: #FFFFFF;
+        }
+        
+        .product-card {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-card img {
+            transition: transform 0.5s ease;
+        }
+        
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+        
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            padding: 2rem 0;
+        }
+        
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .carousel-item {
+            min-width: 300px;
+            margin: 0 15px;
+        }
+        
+        .carousel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .carousel-prev {
+            left: 10px;
+        }
+        
+        .carousel-next {
+            right: 10px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-3px);
+        }
+        
+        .whatsapp { background-color: #25D366; }
+        .instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .facebook { background-color: #1877F2; }
+        
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #25D366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-whatsapp:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .feature-card {
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .carousel-item {
+                min-width: 250px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .carousel-item {
+                min-width: 200px;
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar fixed w-full z-50 py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="#" class="flex items-center">
+                <img src="src/assets/logo_castro.png" width="55px" alt="Perfil" class="rounded-xl border border-purple-400 shadow-md hover:scale-105 hover:shadow-xl transition duration-300">
+
+
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-blue-400 text-xl font-bold p-2 animate-pulse">Castro Brinquedos</span>
+            </a>
+            <div class="hidden md:block">
+                <a href="http://localhost:5173/" class="btn-primary px-6 py-2 rounded-full font-bold">Reservar Agora</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-toggle" class="text-gray-700 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white w-full absolute top-full left-0 py-4 shadow-md">
+            <div class="container mx-auto px-4 flex flex-col space-y-4">
+                <a href="#inicio" class="text-gray-700 hover:text-primary font-medium transition-colors">Início</a>
+                <a href="#sobre" class="text-gray-700 hover:text-primary font-medium transition-colors">Sobre</a>
+                <a href="#brinquedos" class="text-gray-700 hover:text-primary font-medium transition-colors">Brinquedos</a>
+                <a href="#contato" class="text-gray-700 hover:text-primary font-medium transition-colors">Contato</a>
+            </div>
+        </div>
+    </nav>
+
+
+    <section id="inicio" class="hero relative pt-24 pb-16">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 text-white mb-10 md:mb-0">
+                <h1 class="fun-font text-4xl md:text-5xl font-bold mb-4">Diversão Garantida para sua Festa!</h1>
+                <p class="text-lg mb-8">Alugue os melhores brinquedos para tornar sua festa inesquecível. Temos opções para todas as idades e espaços.</p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="#brinquedos" class="btn-secondary px-8 py-3 rounded-full font-bold text-center">Ver Brinquedos</a>
+                    <a href="http://localhost:5173/" class="bg-white text-primary px-8 py-3 rounded-full font-bold text-center hover:bg-gray-100 transition-colors">Reservar Agora</a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <div class="relative animate-float">
+                    <svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="150" cy="150" r="150" fill="#FFD600" fill-opacity="0.3"/>
+                        <circle cx="150" cy="150" r="120" fill="#FFD600" fill-opacity="0.5"/>
+                        <circle cx="150" cy="150" r="90" fill="#FFD600"/>
+                        <rect x="110" y="90" width="80" height="120" rx="10" fill="#FF5252"/>
+                        <rect x="120" y="100" width="60" height="80" rx="5" fill="white"/>
+                        <circle cx="130" cy="190" r="10" fill="#4F8AFF"/>
+                        <circle cx="170" cy="190" r="10" fill="#4F8AFF"/>
+                        <path d="M135 130L150 150L165 130" stroke="#8A4FFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="hero-shape">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+            </svg>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Por que escolher a Castro Brinquedos?</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Oferecemos o melhor em diversão com qualidade e segurança para todas as idades</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="feature-card bg-gray-50 p-6">
+                    <div class="feature-icon bg-primary bg-opacity-10 mx-auto md:mx-0">
+                        <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3 text-center md:text-left">Qualidade Garantida</h3>
+                    <p class="text-gray-600">Todos os nossos brinquedos passam por rigorosas inspeções e manutenções regulares para garantir a segurança das crianças.</p>
+                </div>
+                
+                <div class="feature-card bg-gray-50 p-6">
+                    <div class="feature-icon bg-secondary bg-opacity-10 mx-auto md:mx-0">
+                        <svg class="w-8 h-8 text-secondary" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3 text-center md:text-left">Para Todas as Idades</h3>
+                    <p class="text-gray-600">Temos brinquedos para crianças de todas as idades, desde os pequeninos até os adolescentes, garantindo diversão para todos.</p>
+                </div>
+                
+                <div class="feature-card bg-gray-50 p-6">
+                    <div class="feature-icon bg-accent1 bg-opacity-10 mx-auto md:mx-0">
+                        <svg class="w-8 h-8 text-accent1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3 text-center md:text-left">Entrega Pontual</h3>
+                    <p class="text-gray-600">Garantimos a entrega e montagem dos brinquedos com antecedência para que tudo esteja perfeito para sua festa.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title text-3xl md:text-4xl font-bold text-gray-800">Sobre a Castro Brinquedos</h2>
+            <div class="flex flex-col md:flex-row items-center mt-8">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                   <img src="src/assets/logo_castro.png" width="400px" alt="Perfil" class="rounded-xl border border-purple-400 shadow-md hover:scale-105 hover:shadow-xl transition duration-300">
+                </div>
+                
+                <div class="md:w-1/2 md:pl-8">
+                    <p class="text-lg text-gray-700 mb-6">
+                       A Castro Brinquedos nasceu do sonho da Carol, que sempre teve o desejo de empreender em algo que trouxesse alegria para as crianças. Foi assim que ela escolheu o universo dos brinquedos, com o propósito de transformar festas em momentos inesquecíveis.
+                    </p>
+                    <p class="text-lg text-gray-700 mb-6">
+                        Mais do que alugar brinquedos, nossa missão é proporcionar sorrisos, criar memórias felizes e fazer parte de histórias únicas. Valorizamos cada detalhe da experiência, colocando a satisfação e a emoção das famílias acima de qualquer valor financeiro.
+                    </p>
+                    <p class="text-lg text-gray-700">
+                        O que nos move é saber que, por algumas horas, podemos tornar a vida de uma família mais leve, mais alegre e muito mais divertida.
+                    </p>
+                    <div class="mt-8">
+                        <a href="http://localhost:5173/"  class="btn-primary px-8 py-3 rounded-full font-bold inline-block">Reservar Agora</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="brinquedos" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title text-3xl md:text-4xl font-bold text-gray-800">Nossos Brinquedos</h2>
+            <p class="text-lg text-gray-700 mb-8">Conheça nossa variedade de brinquedos para tornar sua festa inesquecível</p>
+            
+            <div class="carousel-container">
+                <div class="carousel" id="products-carousel">
+                    <div class="carousel-item">
+                        <div class="product-card bg-white h-full">
+                            <div class="h-48 overflow-hidden">
+                                <img src="src/assets/pula_pula.jpg" alt="pula_pula">
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-xl font-bold text-gray-800">Pula-Pula</h3>
+                                <p class="text-gray-600">Ideal para crianças de 3 a 10 anos</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+           
+                    <div class="carousel-item">
+                        <div class="product-card bg-white h-full">
+                            <div class="h-48 overflow-hidden">
+                                <img src="src/assets/toboga.jpg" alt="toboga">                              
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-xl font-bold text-gray-800">Tobogã Gigante</h3>
+                                <p class="text-gray-600">Para crianças acima de 5 anos</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <div class="product-card bg-white h-full">
+                            <div class="h-48 overflow-hidden">
+                                <img src="src/assets/casa_bolinha.jpg" alt="casa_bolinha">
+                                
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-xl font-bold text-gray-800">Casa de Bolinhas</h3>
+                                <p class="text-gray-600">Para crianças de 2 a 8 anos</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                    <div class="carousel-item">
+                        <div class="product-card bg-white h-full">
+                            <div class="h-48 overflow-hidden">
+                                <img src="src/assets/Pula_pula_grande.jpg" alt="casa_bolinha">
+                                
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-xl font-bold text-gray-800">Pula-Pula Grande</h3>
+                                <p class="text-gray-600">Para crianças de todas as idades</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                    <div class="carousel-item">
+                        <div class="product-card bg-white h-full">
+                            <div class="h-48 overflow-hidden">
+                                <img src="src/assets/brinquedo_indisponivel.png" alt="casa_bolinha">
+                               
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-xl font-bold text-gray-800">Futebol de Sabão Inflável</h3>
+                                <p class="text-gray-600">Para crianças acima de 8 anos</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="carousel-item">
+                        <div class="product-card bg-white h-full">
+                            <div class="h-48 overflow-hidden">
+                                <img src="src/assets/brinquedo_indisponivel.png" alt="casa_bolinha">
+                                
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-xl font-bold text-gray-800">Máquina de Algodão Doce</h3>
+                                <p class="text-gray-600">Com operador incluso</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="product-card bg-white h-full">
+                            <div class="h-48 overflow-hidden">
+                                <img src="src/assets/brinquedo_indisponivel.png" alt="casa_bolinha">
+                                
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-xl font-bold text-gray-800">Guerra de Cotonete Inflável</h3>
+                                <p class="text-gray-600">Com operador incluso</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="product-card bg-white h-full">
+                            <div class="h-48 overflow-hidden">
+                                <img src="src/assets/brinquedo_indisponivel.png" alt="casa_bolinha">
+                                
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-xl font-bold text-gray-800">Castelo Inflável</h3>
+                                <p class="text-gray-600">Com operador incluso</p>
+                            </div>
+                        </div>
+                    </div><div class="carousel-item">
+                        <div class="product-card bg-white h-full">
+                            <div class="h-48 overflow-hidden">
+                                <img src="src/assets/brinquedo_indisponivel.png" alt="casa_bolinha">
+                                
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-xl font-bold text-gray-800">Pebolim</h3>
+                                <p class="text-gray-600">Com operador incluso</p>
+                            </div>
+                        </div>
+                    </div><div class="carousel-item">
+                        <div class="product-card bg-white h-full">
+                            <div class="h-48 overflow-hidden">
+                                <img src="src/assets/brinquedo_indisponivel.png" alt="casa_bolinha">
+                                
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-xl font-bold text-gray-800">Fliperama</h3>
+                                <p class="text-gray-600">Com operador incluso</p>
+                            </div>
+                        </div>
+                    </div><div class="carousel-item">
+                        <div class="product-card bg-white h-full">
+                            <div class="h-48 overflow-hidden">
+                                <img src="src/assets/brinquedo_indisponivel.png" alt="casa_bolinha">
+                                
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-xl font-bold text-gray-800">Toro Mecânico</h3>
+                                <p class="text-gray-600">Com operador incluso</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control carousel-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-control carousel-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <div class="text-center mt-10">
+                <a href="http://localhost:5173/" class="btn-primary px-8 py-3 rounded-full font-bold inline-block">Reservar Agora</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title text-3xl md:text-4xl font-bold text-gray-800">O que nossos clientes dizem</h2>
+            <p class="text-lg text-gray-700 mb-8">Veja a opinião de quem já contratou nossos serviços</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-xl">M</div>
+                        <div class="ml-4">
+                            <h4 class="font-bold text-gray-800">Maria Silva</h4>
+                            <div class="flex text-accent1">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Contratei o pula-pula para o aniversário do meu filho de 5 anos e foi um sucesso! As crianças adoraram e o atendimento foi excelente. Recomendo muito!"</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white font-bold text-xl">J</div>
+                        <div class="ml-4">
+                            <h4 class="font-bold text-gray-800">João Pereira</h4>
+                            <div class="flex text-accent1">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Aluguei a casa de bolinhas e o tobogã para a festa da minha filha. Tudo chegou no horário combinado e os equipamentos estavam em perfeito estado. Ótimo serviço!"</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-accent2 rounded-full flex items-center justify-center text-white font-bold text-xl">C</div>
+                        <div class="ml-4">
+                            <h4 class="font-bold text-gray-800">Carla Mendes</h4>
+                            <div class="flex text-accent1">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Contratei para uma festa na escola e foi um sucesso! As crianças se divertiram muito com o tobogã e o pula-pula. Equipe muito atenciosa e profissional."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="py-16 bg-primary">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Pronto para garantir a diversão da sua festa?</h2>
+            <p class="text-xl text-white mb-8 max-w-2xl mx-auto">Entre em contato conosco agora mesmo e faça sua reserva. Temos os melhores brinquedos para tornar seu evento inesquecível!</p>
+            <a href="http://localhost:5173/" class="bg-white text-primary px-8 py-3 rounded-full font-bold text-lg inline-block hover:bg-gray-100 transition-colors">Reservar Agora</a>
+        </div>
+    </section>
+
+   
+    <section id="contato" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title text-3xl md:text-4xl font-bold text-gray-800">Entre em Contato</h2>
+            <p class="text-lg text-gray-700 mb-8">Estamos à disposição para tirar suas dúvidas e atender suas necessidades</p>
+            
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2 md:pr-8 mb-8 md:mb-0">
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Informações de Contato</h3>
+                        
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-primary bg-opacity-20 flex items-center justify-center mr-4">
+                                <i class="fas fa-map-marker-alt text-primary"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-800 font-medium">Endereço</p>
+                                <p style="font-size: 0.85rem;" class="text-gray-600">Nova Iguaçu - RJ</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-primary bg-opacity-20 flex items-center justify-center mr-4">
+                                <i class="fas fa-phone-alt text-primary"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-800 font-medium">Telefone</p>
+                                <p style="font-size: 0.85rem;" class="text-gray-600">(21) 96884-3651</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 rounded-full bg-primary bg-opacity-20 flex items-center justify-center mr-4">
+                                <i class="fas fa-envelope text-primary"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-800 font-medium">E-mail</p>
+                                <p style="font-size: 0.85rem;" class="text-gray-600">contato@castrobrinquedos.com.br</p>
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Redes Sociais</h3>
+                        <div class="flex space-x-4">
+                            <a href="https://wa.me/5521968843651"  class="social-icon whatsapp">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                            <a href="https://instagram.com/castrobrinquedos" class="social-icon instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://instagram.com/castrobrinquedos" class="social-icon facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+<footer class="bg-gray-900 text-white py-10">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+            <div>
+                <a href="#" class="flex items-center space-x-2">
+                    <span class="fun-font text-2xl font-bold text-white">Castro Brinquedos</span>
+                </a>
+                <p class="mt-3 text-gray-400 max-w-xs text-sm leading-relaxed">
+                    Trazendo diversão e alegria para suas festas. Qualidade e segurança em primeiro lugar.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-base font-semibold mb-3">Links Rápidos</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#inicio" class="text-gray-400 hover:text-white transition">Início</a></li>
+                        <li><a href="#sobre" class="text-gray-400 hover:text-white transition">Sobre</a></li>
+                        <li><a href="#brinquedos" class="text-gray-400 hover:text-white transition">Brinquedos</a></li>
+                        <li><a href="#contato" class="text-gray-400 hover:text-white transition">Contato</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-span-2 md:col-span-1">
+                    <h3 class="text-base font-semibold mb-3">Horário de Atendimento</h3>
+                    <ul class="space-y-1 text-sm text-gray-400">
+                        <li>Segunda a Sexta: 9h às 18h</li>
+                        <li>Sábado: 9h às 14h</li>
+                        <li>Domingo: Fechado</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-6 border-gray-700" />
+
+        <div class="text-center text-xs text-gray-500">
+            <p>
+                © 2025 Castro Brinquedos. Todos os direitos reservados.
+            </p>
+            <p class="mt-2">
+                Desenvolvido 💻 por 
+                <a href="mailto:gabrielfonseca.devback@gmail.com" class="hover:text-primary transition-colors">
+                    Gabriel Fonseca - gabrielfonseca.devback@gmail.com
+                </a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+
+    <a href="https://wa.me/5521968843651" target="_blank" class="floating-whatsapp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        
+        const carousel = document.getElementById('products-carousel');
+        const prevBtn = document.querySelector('.carousel-prev');
+        const nextBtn = document.querySelector('.carousel-next');
+        let position = 0;
+        const itemWidth = 330; // Width + margin
+        const visibleItems = Math.floor(carousel.offsetWidth / itemWidth);
+        const maxPosition = document.querySelectorAll('.carousel-item').length - visibleItems;
+        
+        function updateCarouselPosition() {
+            carousel.style.transform = `translateX(${-position * itemWidth}px)`;
+        }
+        
+        prevBtn.addEventListener('click', () => {
+            position = Math.max(0, position - 1);
+            updateCarouselPosition();
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            position = Math.min(maxPosition, position + 1);
+            updateCarouselPosition();
+        });
+        
+        window.addEventListener('resize', () => {
+            const newVisibleItems = Math.floor(carousel.offsetWidth / itemWidth);
+            const newMaxPosition = document.querySelectorAll('.carousel-item').length - newVisibleItems;
+            position = Math.min(position, newMaxPosition);
+            updateCarouselPosition();
+        });
+        
+        
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9427115b70f66443',t:'MTc0NzY5NDEzMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

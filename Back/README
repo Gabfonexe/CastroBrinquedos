@@ -1,0 +1,12 @@
+CRIAR UM MODELO DE LISTA DE HORÁRIOS PARA CADA PRODUTO E DATA
+
+- colocar no disableDate:
+    - produto com a quantidade 
+    - intervalo de horário
+
+fluxo:
+    criar um intervalo de horário no front,
+    fazer get do disableDate (passando o intervalo do tempo)
+    fazer post do userdata com a data e intervalo de horário escolhido
+    atualizar no disableDate
+    

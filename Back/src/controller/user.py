@@ -6,6 +6,7 @@ from src.model.date import Dates
 from src.service.date import add_date
 from src.service import user as user_service
 from src.model.user import Users
+from src.tasks import amount_and_calendar_dayli_routine
 
 class Login():
     pass
@@ -14,13 +15,16 @@ class Login():
 class Add_User(Resource):
     def post(self):
         data = request.get_json()
-        user = Users(email=data['email'], number=data['phone'], name=data['name'], message=data['message'], date=data['date'], budget=data['amount'])
+        user_date = datetime.strptime(data['date'].replace("Z", ""), "%Y-%m-%dT%H:%M:%S.%f").date()
+        user = Users(email=data['email'], number=data['phone'], name=data['name'], message=data['message'], date=user_date, budget=data['amount'], products=data['products'])
         user_service.add_user(user)
+        user_service.create_leads()
+        amount_and_calendar_dayli_routine()
 
-        raw_date = data['date']
-        parsed_date = datetime.fromisoformat(raw_date.replace("Z", "")).date()
-        date_obj = Dates(date=parsed_date, total_amount=data['amount'])
-        add_date(date_obj)
+        # raw_date = data['date']
+        # parsed_date = datetime.fromisoformat(raw_date.replace("Z", "")).date()
+        date_obj = Dates(date=user_date, total_amount=data['amount'])
+        add_date(new_date=date_obj)
         return {"message": "Data registrada com sucesso"}, 201
 
 class Update_User(Resource):
@@ -34,9 +38,9 @@ class list_users(Resource):
      def get(self):
         users = user_service.list_users()
         return jsonify(users)
-
-
+     
 api.add_resource(Add_User, '/criar')
 api.add_resource(list_users, '/users')
 api.add_resource(Update_User, '/alterar')
+
 

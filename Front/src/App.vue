@@ -1,417 +1,439 @@
 <template>
+
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  
+  
+  
   <div class="app-container">
-  <Toast />
 
-    <MenuBar class="navbar" />
 
-    <section class="hero-section">
-      <div class="container text-center">
-        <h1 class="hero-title">Castro Brinquedos</h1>
-        <p class="hero-subtitle">Transforme sua festa em um parque de diversão!</p>
-        <Button label="Ver Brinquedos" class="cta-button" @click="scrollToSection('products')" />
-      </div>
-    </section>
 
-    <section class="products-section" ref="products">
-  <div class="container">
-    <h2 class="section-title">Nossos Brinquedos</h2>
-    <Carousel :value="products" :numVisible="3" :numScroll="1" :responsiveOptions="responsiveOptions">
-      <template #item="slotProps">
-        <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4">
-          <div class="mb-4">
-            <div class="relative mx-auto">
-              <img :src="slotProps.data.image" :alt="slotProps.data.name" class="w-full rounded" style="height: 200px; object-fit: cover;" />
-            </div>
-          </div>
-          <div class="mb-2 font-medium text-lg text-center">{{ slotProps.data.name }}</div>
-          <div class="text-center mb-2 text-sm">{{ slotProps.data.description }}</div>
-          <div class="flex justify-center font-semibold text-xl text-red-500">
-            R$ {{ slotProps.data.price }}/dia
-            <Button
-                :icon="isProductSelected(slotProps.data) ? 'pi pi-check' : 'pi pi-plus'"
-                @click="toggleItem(slotProps.data)"
-                :class="['transition-all', isProductSelected(slotProps.data) ? 'bg-white text-green-600 border border-green-500'  : 'bg-green-500 text-white']"
-              />
-          </div>  
-        </div>
-      </template>
-    </Carousel>
-  </div>
-</section>
+    <Toast />
+    
+    <MenuTopBar />
 
-    <section class="calendar-section">
-      <div class="container text-center">
-        <h2 class="section-title">Disponibilidade</h2>
-        <Calendar 
-          v-model="selectedDate"
-          :inline="true"
-          :minDate="minDate"
-          :maxDate="maxDate"
-          :disabledDates="disabledDates"
-          class="responsive-calendar"
+
+    
+  <section class="bg-gradient-to-br from-blue-50 to-white py-16 px-6 sm:px-12">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-3xl sm:text-4xl font-bold text-blue-900 mb-4">
+        Bem-vindo à página de orçamento
+      </h1>
+      <p class="text-gray-700 text-base sm:text-lg mb-8">
+        Aqui você pode alugar brinquedos de forma fácil e rápida! Escolha os produtos, selecione a data, preencha o formulário e aguarde nosso contato. Tudo pensado para garantir diversão com praticidade.
+      </p>
+
+      <div class="bg-white p-6 rounded-xl shadow-md max-w-xl mx-auto">
+        <p class="text-gray-800 mb-4">
+          Está com dúvidas sobre como funciona o processo?
+        </p>
+        <Button 
+          label="Mais Informações" 
+          icon="pi pi-info-circle" 
+          @click="openPosition('top')" 
+          severity="primary" 
+          class="w-full sm:w-auto" 
         />
       </div>
-    </section>
+    </div>
 
-    <section class="contact-section">
-      <div class="container text-center">
-        <h2 class="section-title">Entre em Contato</h2>
-        <p>Solicite um orçamento personalizado para sua festa!</p>
-        <Button label="Fale Conosco" @click="showContactDialog = true" class="contact-button" />
+    <Dialog 
+      v-model:visible="visible" 
+      header="Como funciona o aluguel?" 
+      :style="{ width: '30rem' }" 
+      :position="position" 
+      :modal="true" 
+      :draggable="false"
+    >
+      <div class="text-surface-700 dark:text-surface-200 space-y-4 text-sm leading-relaxed">
+        <p>
+          Para realizar o aluguel de brinquedos, siga estes passos:
+        </p>
+        <ol class="list-decimal pl-5 space-y-2">
+          <li>Escolha os brinquedos desejados na lista de produtos.</li>
+          <li>Selecione a <strong>quantidade</strong> de cada item.</li>
+          <li>Escolha a <strong>data do evento</strong> usando o calendário disponível.</li>
+          <li>Preencha o formulário de orçamento com:
+            <ul class="list-disc pl-5 mt-1">
+              <li>Nome completo</li>
+              <li>E-mail</li>
+              <li>Telefone para contato</li>
+              <li>Mensagem adicional (opcional)</li>
+            </ul>
+          </li>
+        </ol>
+        <p>
+          Após o envio, entraremos em contato para confirmar os detalhes e a disponibilidade.
+          <strong class="block mt-2 text-red-600">
+            Importante: a reserva só será garantida após a confirmação do pagamento do valor total do pedido.
+          </strong>
+        </p>
       </div>
-    </section>
 
-    <footer class="footer">
-      <div class="container text-center">
-        <p>Castro Brinquedos &copy; {{ new Date().getFullYear() }}</p>
+      <div class="flex justify-end gap-2 mt-6">
+        <Button type="button" label="Fechar" severity="secondary" @click="visible = false" />
       </div>
+    </Dialog>
+  </section>
+
+
+      <Carousel
+        :value="products"
+        :numVisible="3"
+        :numScroll="1"
+        :responsiveOptions="[
+          { breakpoint: '1024px', numVisible: 2, numScroll: 1 },
+          { breakpoint: '768px', numVisible: 1, numScroll: 1 }
+        ]"
+      >
+        <template #item="slotProps">
+          <Card
+            class="m-4 rounded-2xl border border-gray-200 shadow-lg transition-transform hover:scale-[1.03] bg-white"
+          >
+          
+            <template #header>
+              <img
+                :src="`http://localhost:8080/static/${slotProps.data.image}`"
+                :alt="slotProps.data.type"
+                class="w-full h-48 sm:h-64 object-cover rounded-t-2xl"
+              />
+            </template>
+
+            
+            <template #title>
+              <h3 class="text-base sm:text-lg font-bold text-center text-gray-800 mt-3">
+                {{ slotProps.data.type }}
+              </h3>
+            </template>
+
+            
+            <template #content>
+              <p class="text-sm text-gray-600 text-center px-3 mt-2">
+                {{ slotProps.data.description }}
+              </p>
+              <div class="text-center mt-3 font-semibold text-lg sm:text-xl text-rose-500">
+                R$ {{ slotProps.data.price }}/dia
+              </div>
+            </template>
+
+            
+            <template #footer>
+              <div class="flex flex-col sm:flex-row justify-center items-center gap-3 mt-4 mb-4 px-4">
+                <Button
+                  :icon="isProductSelected(slotProps.data) ? 'pi pi-check' : 'pi pi-plus'"
+                  @click="toggleItem(slotProps.data)"
+                  :class="[
+                    isProductSelected(slotProps.data)
+                      ? 'p-button-success p-button-outlined'
+                      : 'p-button-success'
+                  ]"
+                  class="w-10 h-10 p-0 flex items-center justify-center rounded-full"
+                />
+
+                <InputText
+                  v-model="slotProps.data.selectedQuantity"
+                  type="number"
+                  :min="1"
+                  :max="slotProps.data.static_quantity"
+                  placeholder="Qtd"
+                  class="w-20 h-10 text-center border border-gray-300 rounded-md"
+                  @input="validateQuantity(slotProps)"
+                  @blur="validateQuantity(slotProps)"
+                />
+              </div>
+            </template>
+          </Card>
+        </template>
+      </Carousel>
+
+
+      <div>
+        <FormAndCalendar />
+      </div>
+    
+    
+    <FAQ />
+    
+
+    <footer class="footer bg-primary text-white text-center py-4">
+      <p>Castro Brinquedos &copy; {{ new Date().getFullYear() }}</p>
     </footer>
 
     <Dialog v-model:visible="showContactDialog" modal header="Contato" :style="{ width: '90vw', maxWidth: '500px' }">
-      <div class="contact-form">
-        <div class="form-group">
+      <div class="p-fluid">
+        <div class="field">
           <label for="name">Nome</label>
-          <InputText id="name" v-model="contactForm.name" class="form-control" />
+          <InputText id="name" v-model="contactForm.name" />
         </div>
-        <div class="form-group">
+        <div class="field">
           <label for="email">Email</label>
-          <InputText id="email" v-model="contactForm.email" class="form-control" />
+          <InputText id="email" v-model="contactForm.email" />
         </div>
-        <div class="form-group">
+        <div class="field">
           <label for="phone">Celular</label>
-          <InputText id="phone" v-model="contactForm.phone" class="form-control" />
+          <InputText id="phone" v-model="contactForm.phone" />
         </div>
-        <div class="form-group">
+
+        <div class="field">
           <label for="message">Mensagem</label>
-          <Textarea id="message" v-model="contactForm.message" rows="3" class="form-control" />
+          <Textarea id="message" v-model="contactForm.message" rows="3" />
         </div>
       </div>
       <template #footer>
-        <Button label="Cancelar" @click="showContactDialog = false" class="p-button-text" />
+        <Button label="Cancelar" class="p-button-text" @click="showContactDialog = false" />
         <Button label="Enviar" @click="submitContactForm" />
       </template>
     </Dialog>
   </div>
+  <FooterBar />
 </template>
 
 <script>
+
+import DataView from 'primevue/dataview';
+import Timeline from 'primevue/timeline';
 import Calendar from 'primevue/calendar';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import Card from 'primevue/card';
-import MenuBar from './components/MenuBar.vue';
 import Carousel from 'primevue/carousel';
-import axios from 'axios';
 import Toast from 'primevue/toast';
-import ToggleButton from 'primevue/togglebutton';
+import Accordion from 'primevue/accordion';
+import AccordionTab from 'primevue/accordiontab';
+import axios from 'axios';
+import MenuTopBar from './components/MenuTopBar.vue';
+import FooterBar from './components/FooterBar.vue';
+import FormAndCalendar from './components/FormAndCalendar.vue';
+import FAQ from './pages/FAQ.vue';
+import { useAmountStore } from './store';
+import { mapState, mapWritableState } from 'pinia';
+
+
+
 
 export default {
   name: 'App',
   components: {
+    Timeline,
+    DataView,
     Calendar,
     Dialog,
     Button,
     InputText,
     Textarea,
     Card,
-    MenuBar,
     Carousel,
     Toast,
-    ToggleButton
+    Accordion,
+    AccordionTab,
+    MenuTopBar,
+    FooterBar,
+    FormAndCalendar,
+    FAQ,
+
+
   },
   data() {
-    const today = new Date();
-    const nextYear = new Date();
-    nextYear.setFullYear(today.getFullYear() + 1);
-
+    
     return {
-      selectedProducts: [],
-      amount: 0,
-      showContactDialog: false,
-      selectedDate: null,
-      minDate: today,
-      maxDate: nextYear,
-      isSelected: false,
-      disabledDates: [
-        new Date(2025, 11, 25),
-        new Date(2025, 11, 31),
-        new Date(2025, 10, 15),
+      navigation: [
+      { name: 'Product', href: '#' },
+      { name: 'Features', href: '#' },
+      { name: 'Marketplace', href: '#' },
+      { name: 'Company', href: '#' },
       ],
-      contactForm: {
-        name: '',
-        email: '',
-        phone: '',
-        message: '',
-      },
-      products: [
-        {
-          id: 1,
-          name: 'Pula-Pula',
-          description: 'Pula-pula grande para crianças de até 12 anos',
-          price: 150,
-          image: 'src/assets/pula_pula.jpg'
-        },
-        {
-          id: 2,
-          name: 'Piscina de Bolinhas',
-          description: '2x2m com 5000 bolinhas',
-          price: 120,
-          image: 'src/assets/piscina_bolinha.jpg'
-        },
-        {
-          id: 3,
-          name: 'Castelo Inflável',
-          description: 'Com escorregador, 3m de altura',
-          price: 200,
-          image: 'src/assets/toboga.jpg'
-        },
-        {
-          id: 4,
-          name: 'Castelo Inflável',
-          description: 'Com escorregador, 3m de altura',
-          price: 200,
-          image: 'https://example.com/castelo.jpg'
-        },
-        {
-          id: 5,
-          name: 'Castelo Inflável',
-          description: 'Com escorregador, 3m de altura',
-          price: 200,
-          image: 'https://example.com/castelo.jpg'
-        },
-        {
-          id: 6,
-          name: 'Castelo Inflável',
-          description: 'Com escorregador, 3m de altura',
-          price: 200,
-          image: 'https://example.com/castelo.jpg'
-        },
-        {
-          id: 7,
-          name: 'Castelo Inflável',
-          description: 'Com escorregador, 3m de altura',
-          price: 200,
-          image: 'https://example.com/castelo.jpg'
-        },
-        {
-          id: 8,
-          name: 'Castelo Inflável',
-          description: 'Com escorregador, 3m de altura',
-          price: 200,
-          image: 'https://example.com/castelo.jpg'
-        },
-        {
-          id: 9,
-          name: 'Castelo Inflável',
-          description: 'Com escorregador, 3m de altura',
-          price: 200,
-          image: 'https://example.com/castelo.jpg'
-        },
-      ]
+      mobileMenuOpen: false,
+      position: 'center',
+      visible: false,
+      deleteItem: '',
+      layout: 'grid',
+      options: ['list', 'grid'],
+      ProductSelected: false,
+      showContactDialog: false,
+      selectedProducts: [],
+      products: [],
+      productsConst: [],
+      quantityMap: {},
     };
   },
   methods: {
+     validateQuantity(product) {
+      const val = product.selectedQuantity;
+      const max = product.static_quantity;
+
+      if (val === null || val === '') return;
+
+      if (val < 1) product.selectedQuantity = 1;
+      else if (val > max) product.selectedQuantity = max;
+
+      const selected = this.selectedProducts.find(p => p.id === product.id);
+
+      if(selected && selected.selectedQuantity !== product.selectedQuantity){
+        this.selectedProducts = this.selectedProducts.filter(p => p.id !== product.id);
+      }
+    },
+    beforeContactForm(){
+      this.$toast.add({
+          severity: 'info',
+          summary: 'Importante',
+          detail: `Por favor, adicione algum brinquedo para poder seguir para o formulário de orçamento.`,
+          life: 5000,
+        });
+    },
+    openPosition(pos) {
+            this.position = pos;
+            this.visible = true;
+    },
+    
     toggleItem(product) {
+
       const index = this.selectedProducts.findIndex(p => p.id === product.id);
       if (index > -1) {
-        this.selectedProducts.splice(index, 1); // já estava selecionado, remove
+
+        // produto já está selecionado → remover
+        this.selectedProducts.splice(index, 1);
+        this.ProductSelected = false; 
+        const deleteDate = this.disabledDates.filter(item => item.product_type === product.type);
+        deleteDate.forEach((item) => {
+          
+
+          this.disabledDates.pop(item.product_type);
+
+        })
+
+
       } else {
-        this.selectedProducts.push(product); // adiciona o produto selecionado
+        if(product.selectedQuantity === 0){return}
+        // produto não está selecionado → adicionar
+        this.selectedProducts.push(product);
+        this.ProductSelected = true;
+        debugger;
+     
+      }
+
+      // Atualiza valor total
+      let totalAmount = 0.0;
+      this.selectedProducts.forEach((product) => {
+        totalAmount += product.price;
+      });
+      this.amount = totalAmount;
+      this.storeProducts = this.selectedProducts;
+
+      // Atualizar datas desabilitadas
+      if (this.ProductSelected) {
+
+        if(product.selectedQuantity >  product.static_quantity){
+              this.$toast.add({
+                severity: 'error',
+                summary: 'Importante',
+                detail:  `O Brinquedo: `+ product.type + ` possui `  + product.static_quantity + ` unidade(s) disponíveis`,
+                life: 5000,
+              })
+              this.ProductSelected = false;
+              return;
+            }
+
+        for (let p of this.disableDates) {
+          const productsFiltered = this.productsConst.filter(item => item.type === p.product)
+
+          if (p.product === product.type) { 
+
+            if(productsFiltered[0].static_quantity - product.selectedQuantity === 0){
+       
+              const date = new Date(p.date);
+              date.setHours(0, 0, 0, 0);
+              let objDate = {'date': date, 'product_type': product.type}
+              // add como obj para poder remover do pop
+              this.disabledDates.push(objDate);
+              
+            }
+            
+          }
+        }
+      } else {
+        
+        this.deleteItem = this.disabledDates.filter(item => item.product_type === product.type);
+        
+
       }
     },
 
     isProductSelected(product) {
+      // const iconElement = buttonElement.querySelector('.pi');
+      // if (iconElement.classList.contains('pi-check')) {
+      //   this.ProductSelected = true;  
+
+      //   // é o check
+      // } else if (iconElement.classList.contains('pi-plus')) {
+      //   this.ProductSelected = false;  
+
+      // }
+      // this.deleteItem = this.disabledDates.filter(item => item.product === 'Pula Pula Médio');
+
+      // // this.disabledDates.pop(deleteItem);
       return this.selectedProducts.some(p => p.id === product.id);
     },
-    sendUserData(){
-      
-    },
-    submitContactForm() {
-      this.amount = this.selectedProducts.reduce((total, produto) => total + produto.price, 0);
-      const userData = {name:this.contactForm.name, email:this.contactForm.email, phone:this.contactForm.phone, message:this.contactForm.message, date:this.selectedDate, amount:this.amount};
-      axios.post('http://localhost:8080/criar',userData)
-
-      this.contactForm = {
-        name: '',
-        email: '',
-        phone: '',
-        message: '',
-      };
-
-      this.showContactDialog = false;
-
-      this.$toast.add({
-        severity: 'success',
-        summary: 'Sucesso',
-        detail: 'Seu cadastro foi realizado com sucesso, em breve entraremos em contato!',
-        life: 2000,
-      })
-      
-    },
-    scrollToSection(refName) {
-      const section = this.$refs[refName];
-      if (section) section.scrollIntoView({ behavior: 'smooth' });
+    
+    
+  },
+  watch:{
+    products:{
+      handler(newProducts){
+        newProducts.forEach((product) => {
+          const previusQuantity = this.quantityMap[product.id];
+          if (product.selectedQuantity !== previusQuantity){
+          this.quantityMap[product.id] = product.selectedQuantity;
+          this.toggleItem(product);
+        } 
+        });
+      },
+      deep: true
     }
+    
   },
   computed: {
-  totalAmount() {
-  
+    ...mapState(useAmountStore, [
+        'disableDates'
+      ]),
+
+    ...mapWritableState(useAmountStore, ['amount', 'storeProducts', 'disabledDates']),
+
+    // calculateAmount(){
+    //   this.amount = this.selectedProducts.reduce((total, produto) => total + produto.price, 0);
+    //   this.products = this.selectedProducts;
+    // },
+
+
+  },
+
+
+  async beforeMount(){
+    this.products = (await axios.get('http://localhost:8080/products')).data;
+    this.products = this.products.map(product => ({
+      ...product,
+      selectedQuantity: 0
+    }));
+    this.productsConst =  [...this.products]//(await axios.get('http://localhost:8080/products')).data; 
+    
+    
+    this.products.forEach((product) =>{
+      this.quantityMap[product.id] = 0;
+    })
+
   }
-}
+  
 };
 </script>
 
 <style>
-:root {
-  --primary-color: #007BFF; /* Azul */
-  --secondary-color: #FF4136; /* Vermelho */
-  --accent-color: #FFD700; /* Amarelo */
-  --bg-light: #f9f9f9;
-  --text-color: #333;
+body.dark {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
 }
-
-body {
-  font-family: 'Roboto', sans-serif;
-  margin: 0;
-  background-color: var(--bg-light);
-  color: var(--text-color);
-}
-
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: auto;
-}
-
-/* Navbar */
-.navbar {
-  background-color: var(--primary-color);
-  color: white;
-  padding: 1rem;
-}
-
-/* Hero */
-.hero-section {
-  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-  color: white;
-  padding: 4rem 1rem;
-  text-align: center;
-}
-
-.hero-title {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.hero-subtitle {
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.cta-button {
-  background-color: var(--accent-color);
-  border: none;
-  font-size: 1.1rem;
-  padding: 0.75rem 2rem;
-}
-
-/* Products */
-.products-section {
-  padding: 4rem 1rem;
-}
-
-.section-title {
-  font-size: 2.5rem;
-  color: var(--primary-color);
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-}
-
-.product-card {
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-  transition: transform 0.3s;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-}
-
-.product-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.price {
-  font-weight: bold;
-  color: var(--secondary-color);
-  font-size: 1.2rem;
-  margin-top: 1rem;
-}
-
-/* Calendar */
-.calendar-section {
-  background-color: white;
-  padding: 4rem 1rem;
-}
-
-/* Contact */
-.contact-section {
-  background-color: var(--accent-color);
-  color: #000;
-  padding: 4rem 1rem;
-}
-
-.contact-button {
-  background-color: var(--secondary-color);
-  color: white;
-  border: none;
-  margin-top: 1rem;
-  font-size: 1rem;
-  padding: 0.75rem 1.5rem;
-}
-
-/* Footer */
-.footer {
-  background-color: var(--primary-color);
-  color: white;
-  padding: 2rem 1rem;
-  text-align: center;
-}
-
-/* Form */
-.contact-form {
-  display: grid;
-  gap: 1rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-control {
-  padding: 0.5rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
-
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 2rem;
-  }
-  .section-title {
-    font-size: 2rem;
-  }
+.card,
+.p-accordion-tab {
+  transition: all 0.3s ease;
 }
 </style>
