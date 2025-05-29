@@ -14,7 +14,7 @@ Este projeto foi desenvolvido para atender a uma demanda real de mercado, oferec
 * **Marshmallow** (Serialização e validação de dados)
 * **Flask-Admin** (Dashboard administrativo)
 * **Flask-Migrate** (Controle de versão do banco de dados)
-* **MySQL**
+* **PostgreSQL**
 
 ### Front-end
 
@@ -98,7 +98,8 @@ Todas as alterações no banco de dados estão versionadas em `migrations/versio
 
 ## 🌐 Demonstração
 
-> *\[]*
+> *\[https://castro-brinquedos.vercel.app/]*
+> *\[https://castro-brinquedos-1r7b.vercel.app/]*
 
 ---
 
