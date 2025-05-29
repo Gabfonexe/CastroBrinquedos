@@ -99,7 +99,7 @@ export default {
         {
           label: 'Home',
           icon: 'pi pi-home',
-          url: 'landPage.html',
+          url: 'https://castro-brinquedos.vercel.app/',
         },
       ],
     };
