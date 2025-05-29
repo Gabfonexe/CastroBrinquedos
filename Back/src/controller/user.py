@@ -18,6 +18,7 @@ class Add_User(Resource):
         user_date = datetime.strptime(data['date'].replace("Z", ""), "%Y-%m-%dT%H:%M:%S.%f").date()
         user = Users(email=data['email'], number=data['phone'], name=data['name'], message=data['message'], date=user_date, budget=data['amount'], products=data['products'])
         user_service.add_user(user)
+        user_service.create_leads()
         amount_and_calendar_dayli_routine()
 
         # raw_date = data['date']
@@ -37,9 +38,9 @@ class list_users(Resource):
      def get(self):
         users = user_service.list_users()
         return jsonify(users)
-
-
+     
 api.add_resource(Add_User, '/criar')
 api.add_resource(list_users, '/users')
 api.add_resource(Update_User, '/alterar')
+
 

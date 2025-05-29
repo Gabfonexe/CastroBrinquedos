@@ -65,7 +65,6 @@ def amount_and_calendar_dayli_routine():
         print("🕒 Fim da rotina...")
         time.sleep(6 * 60 * 60)
         
-        # CRIAR UMA LISTA DE HORÁRIOS, PARA ESCOLHER O HORÁRIO ESPECÍFICO
             
             # DEIXAR UNAVALABLE SOMENTE NA DATA QUE FOI ESCOLHIDA
 

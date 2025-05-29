@@ -18,7 +18,7 @@ class Products(db.Model):
     price: float = db.Column(db.Float)
     image: string = db.Column(db.String(250)) #Flask-Admin com ImageUploadField gera automaticamente um botão de upload no formulário do painel administrativo.
     lost_quantity: int = db.Column(db.Integer, default=0)
-
+    static_quantity: Integer = db.Column(db.Integer)
     # criar uma coluna de price
 
 

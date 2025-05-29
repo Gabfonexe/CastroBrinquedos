@@ -1,14 +1,11 @@
 from flask import jsonify
-from src.model.user import Users
+from sqlalchemy import func
+from src.model.user import Leads, Users
 from src.extensions.extensions import db
 
 
 def add_user(user:Users):
 
-    exists_user = db.session.query(Users).filter_by(email=user.email, number=user.number).first()
-    if(exists_user):
-        return jsonify({"error":"Esse usuário já foi cadastrado"})
-    
     db.session.add(user)
     db.session.commit()
 
@@ -27,3 +24,24 @@ def update_user(user:Users):
 def list_users():
     users = db.session.query(Users).all()
     return users
+
+
+def create_leads():
+    subquery = db.session.query(Leads.email).subquery()
+    users = db.session.query(Users).filter(~Users.email.in_(subquery)).all()
+    # leads = db.session.query(Leads).all()
+    for user in users:
+        obj = {'email':user.email, 'name':user.name, 'number':user.number, 'is_confirmed':user.is_confirmed}
+        lead = Leads(email=obj['email'], name=obj['name'], number=obj['number'], is_confirmed=obj['is_confirmed'])
+        db.session.add(lead)
+        db.session.commit()
+    
+    
+
+
+
+
+
+    
+
+
