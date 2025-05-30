@@ -93,7 +93,7 @@
           
             <template #header>
               <img
-                :src="`http://localhost:8080/static/${slotProps.data.image}`"
+                :src="`https://castrobrinquedos.onrender.com/static/${slotProps.data.image}`"
                 :alt="slotProps.data.type"
                 class="w-full h-48 sm:h-64 object-cover rounded-t-2xl"
               />
@@ -410,7 +410,7 @@ export default {
 
 
   async beforeMount(){
-    this.products = (await axios.get('http://localhost:8080/products')).data;
+    this.products = (await axios.get('https://castrobrinquedos.onrender.com/products')).data;
     this.products = this.products.map(product => ({
       ...product,
       selectedQuantity: 0
