@@ -4,9 +4,9 @@ from src.controller.dates import Unavailable_Dates
 
 def register_routes(api):
     api.add_resource(list_products, '/products')
-    api.add_resource(Add_User, '/products')
-    api.add_resource(list_users, '/products')
-    api.add_resource(Update_User, '/products')
-    api.add_resource(Unavailable_Dates, '/products')
+    api.add_resource(Add_User, '/criar')
+    api.add_resource(list_users, '/users')
+    api.add_resource(Update_User, '/alterar')
+    api.add_resource(Unavailable_Dates, '/unavailable/dates')
 
    
