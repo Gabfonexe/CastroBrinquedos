@@ -1,5 +1,4 @@
 from datetime import datetime
-from app import api
 from flask import jsonify, request
 from flask_restful import Resource
 from src.schema.product_schema import ProductSchema
