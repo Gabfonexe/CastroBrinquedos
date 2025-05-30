@@ -13,7 +13,7 @@ from src.model.calendar import Calendar
 from src.model.products import Products
 from admin import init_app as init_admin
 from src.controller import flask_admin 
-from src.controller import user, dates,  product
+from src.routes import register_routes
 
 
 
@@ -36,3 +36,4 @@ CORS(app)
 
 flask_admin.register_admin_routes(app)
 init_admin(app)
+register_routes(api)
