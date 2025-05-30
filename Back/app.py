@@ -13,7 +13,7 @@ from src.model.calendar import Calendar
 from src.model.products import Products
 from admin import init_app as init_admin
 from src.controller import flask_admin 
-
+from src.controller import user, dates,  product
 
 
 
