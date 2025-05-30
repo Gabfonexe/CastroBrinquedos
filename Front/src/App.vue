@@ -1,12 +1,26 @@
 <template>
 
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  
-  
-  
-  <div class="app-container">
 
 
+  <div v-if="loading === true" class="min-h-screen flex flex-col items-center justify-center bg-white">
+  <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-blue-400 text-3xl font-bold mb-6 animate-pulse animate-bounce">
+    Castro Brinquedos
+  </span>
+
+  <ProgressSpinner
+    style="width: 100px; height: 100px"
+    strokeWidth="6"
+    fill="transparent"
+    animationDuration="0.9s"
+    aria-label="Custom ProgressSpinner"
+  />
+
+</div>
+
+  <div  v-if="loading===false" class="app-container">
+
+    
 
     <Toast />
     
@@ -184,8 +198,9 @@
         <Button label="Enviar" @click="submitContactForm" />
       </template>
     </Dialog>
+
+    <FooterBar />
   </div>
-  <FooterBar />
 </template>
 
 <script>
@@ -209,6 +224,7 @@ import FormAndCalendar from './components/FormAndCalendar.vue';
 import FAQ from './pages/FAQ.vue';
 import { useAmountStore } from './store';
 import { mapState, mapWritableState } from 'pinia';
+import ProgressSpinner from 'primevue/progressspinner';
 
 
 
@@ -232,7 +248,7 @@ export default {
     FooterBar,
     FormAndCalendar,
     FAQ,
-
+    ProgressSpinner,
 
   },
   data() {
@@ -256,6 +272,7 @@ export default {
       products: [],
       productsConst: [],
       quantityMap: {},
+      loading: true,
     };
   },
   methods: {
@@ -292,7 +309,6 @@ export default {
       const index = this.selectedProducts.findIndex(p => p.id === product.id);
       if (index > -1) {
 
-        // produto já está selecionado → remover
         this.selectedProducts.splice(index, 1);
         this.ProductSelected = false; 
         const deleteDate = this.disabledDates.filter(item => item.product_type === product.type);
@@ -306,14 +322,12 @@ export default {
 
       } else {
         if(product.selectedQuantity === 0){return}
-        // produto não está selecionado → adicionar
         this.selectedProducts.push(product);
         this.ProductSelected = true;
         debugger;
      
       }
 
-      // Atualiza valor total
       let totalAmount = 0.0;
       this.selectedProducts.forEach((product) => {
         totalAmount += product.price;
@@ -321,14 +335,13 @@ export default {
       this.amount = totalAmount;
       this.storeProducts = this.selectedProducts;
 
-      // Atualizar datas desabilitadas
       if (this.ProductSelected) {
 
         if(product.selectedQuantity >  product.static_quantity){
               this.$toast.add({
                 severity: 'error',
                 summary: 'Importante',
-                detail:  `O Brinquedo: `+ product.type + ` possui `  + product.static_quantity + ` unidade(s) disponíveis`,
+                detail:  `O Brinquedo: `+ product.type + ` possui o máximo de`  + product.static_quantity + ` unidade(s) disponíveis`,
                 life: 5000,
               })
               this.ProductSelected = false;
@@ -345,7 +358,6 @@ export default {
               const date = new Date(p.date);
               date.setHours(0, 0, 0, 0);
               let objDate = {'date': date, 'product_type': product.type}
-              // add como obj para poder remover do pop
               this.disabledDates.push(objDate);
               
             }
@@ -361,18 +373,6 @@ export default {
     },
 
     isProductSelected(product) {
-      // const iconElement = buttonElement.querySelector('.pi');
-      // if (iconElement.classList.contains('pi-check')) {
-      //   this.ProductSelected = true;  
-
-      //   // é o check
-      // } else if (iconElement.classList.contains('pi-plus')) {
-      //   this.ProductSelected = false;  
-
-      // }
-      // this.deleteItem = this.disabledDates.filter(item => item.product === 'Pula Pula Médio');
-
-      // // this.disabledDates.pop(deleteItem);
       return this.selectedProducts.some(p => p.id === product.id);
     },
     
@@ -400,12 +400,6 @@ export default {
 
     ...mapWritableState(useAmountStore, ['amount', 'storeProducts', 'disabledDates']),
 
-    // calculateAmount(){
-    //   this.amount = this.selectedProducts.reduce((total, produto) => total + produto.price, 0);
-    //   this.products = this.selectedProducts;
-    // },
-
-
   },
 
 
@@ -415,13 +409,30 @@ export default {
       ...product,
       selectedQuantity: 0
     }));
-    this.productsConst =  [...this.products]//(await axios.get('http://localhost:8080/products')).data; 
+    this.productsConst =  [...this.products]
     
     
     this.products.forEach((product) =>{
       this.quantityMap[product.id] = 0;
     })
 
+  },
+
+  async mounted (){
+    let response = null;
+
+    while(!response ||  response.status !== 200){
+      try{
+        response = await fetch('https://castrobrinquedos.onrender.com/');
+        if (response.status === 200){
+          this.loading = false;
+          break;
+        } 
+      }
+      catch (err) {
+      }
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    } 
   }
   
 };

@@ -1,4 +1,4 @@
-# Implementar lógica de verificar se o pedido foi confirmado e somar ou subtrair do amount + add no calendar
+
 from datetime import date, datetime
 
 from sqlalchemy import and_
@@ -12,15 +12,13 @@ from src.Enum import Types_Products
 import threading
 import time
 
-# Talvez chamar esse método quando criar um novo user.
+
 def amount_and_calendar_dayli_routine(): 
-    #trocar para True dps
-    # AQUI SÓ RODA NA PRIMEIRA VEZ DE 1 USER CONFIRMADO
     while True:
         try:
             with app.app.app_context():
                 now = datetime.now().date()
-                users = db.session.query(Users).filter(and_(Users.is_confirmed == True, Users.is_checked == False)).all() #criar nova coluna para verificar se o user ja foi verificado na rotina
+                users = db.session.query(Users).filter(and_(Users.is_confirmed == True, Users.is_checked == False)).all() 
                 available_product_quantity = 0
                 print("🕒 Rodando rotina...")
                 if users:
@@ -30,7 +28,6 @@ def amount_and_calendar_dayli_routine():
                             exist_product = db.session.query(Products).filter(Products.type == product_type_enum).first() 
                             if exist_product:
                                 if exist_product.is_available == True:
-                                     # mudar para colocar a data do futuro e n no presente.
                                     exist_product.quantity -= product['quantity']
                                     exist_product.lost_quantity += 1
                                     db.session.commit()
@@ -66,7 +63,7 @@ def amount_and_calendar_dayli_routine():
         time.sleep(6 * 60 * 60)
         
             
-            # DEIXAR UNAVALABLE SOMENTE NA DATA QUE FOI ESCOLHIDA
+
 
 
 def date_available_routine(user:Users):
@@ -86,6 +83,3 @@ def date_available_routine(user:Users):
         return True
     return False
 
-
-# Criar uma forma de retirar o amount se n estiver confirmado - Criar nova tabela de faturamento diário
-# Criar rotina para devolver o valor da quantidade de cada produto após um determinado tempo.

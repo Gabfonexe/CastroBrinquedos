@@ -20,8 +20,6 @@ class Add_User(Resource):
         user_service.create_leads()
         amount_and_calendar_dayli_routine()
 
-        # raw_date = data['date']
-        # parsed_date = datetime.fromisoformat(raw_date.replace("Z", "")).date()
         date_obj = Dates(date=user_date, total_amount=data['amount'])
         add_date(new_date=date_obj)
         return {"message": "Data registrada com sucesso"}, 201

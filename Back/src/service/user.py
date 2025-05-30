@@ -29,7 +29,6 @@ def list_users():
 def create_leads():
     subquery = db.session.query(Leads.email).subquery()
     users = db.session.query(Users).filter(~Users.email.in_(subquery)).all()
-    # leads = db.session.query(Leads).all()
     for user in users:
         obj = {'email':user.email, 'name':user.name, 'number':user.number, 'is_confirmed':user.is_confirmed}
         lead = Leads(email=obj['email'], name=obj['name'], number=obj['number'], is_confirmed=obj['is_confirmed'])

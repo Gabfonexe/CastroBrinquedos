@@ -9,8 +9,7 @@ class Calendar(db.Model):
     __tablename__ = "Calendar"
     id: BigInteger = db.Column(db.BigInteger, primary_key=True)
     date: Date = db.Column(db.Date, nullable=False)
-    day_quantity: int = db.Column(db.Integer, default=0) #Usar para controlar a quantidade de produtos de aluguel, n pode ser maior que 5
-
+    day_quantity: int = db.Column(db.Integer, default=0) 
 
 @dataclass
 class DateUnavailable(db.Model):
@@ -21,6 +20,3 @@ class DateUnavailable(db.Model):
     product: string = db.Column(db.String(120),nullable=True) 
 
 
-# Se a quantidade de produtos for zerada (is_unavailable), então aquele dia não poderá estar disponível mais. 
-# -> talvez criar um tooltip mostrando os produtos disponíveis
-# -> se a data não estiver disponível, mostrar o tooltip com o reason;

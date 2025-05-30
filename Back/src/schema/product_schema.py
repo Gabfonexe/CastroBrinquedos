@@ -12,5 +12,4 @@ class ProductSchema(SQLAlchemyAutoSchema):
     is_available = ma.auto_field()
     price = ma.auto_field()
 
-    # serializar o enum como string
     type = ma.Function(lambda obj: obj.type.value)

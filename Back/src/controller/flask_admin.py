@@ -1,8 +1,9 @@
 from flask import redirect, render_template, request, session, url_for
 from flask_admin import AdminIndexView
 from flask_admin.base import expose
+import os
 
-ADMIN_PASSWORD = "1234"  # exemplo, substitua pela sua senha real
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 
 def register_admin_routes(app):
     @app.route("/login/admin", methods=["GET", "POST"])
