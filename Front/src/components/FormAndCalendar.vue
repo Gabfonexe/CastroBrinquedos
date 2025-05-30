@@ -228,9 +228,6 @@ export default{
                 return
             }
 
-            
-
-            // this.amount = this.selectedProducts.reduce((total, produto) => total + produto.price, 0);
             const userData = {
                 phone: this.phone,
                 date: this.selectedDate,
