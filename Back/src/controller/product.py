@@ -17,6 +17,5 @@ class list_products(Resource):
 
 
 
-api.add_resource(list_products, '/products')
 
 

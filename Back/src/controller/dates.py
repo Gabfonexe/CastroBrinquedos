@@ -8,4 +8,3 @@ class Unavailable_Dates(Resource):
         dates = list_dates_unavailables()
         return jsonify(dates)
     
-api.add_resource(Unavailable_Dates, '/unavailable/dates')

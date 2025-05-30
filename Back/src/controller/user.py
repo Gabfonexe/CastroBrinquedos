@@ -39,8 +39,5 @@ class list_users(Resource):
         users = user_service.list_users()
         return jsonify(users)
      
-api.add_resource(Add_User, '/criar')
-api.add_resource(list_users, '/users')
-api.add_resource(Update_User, '/alterar')
 
 
