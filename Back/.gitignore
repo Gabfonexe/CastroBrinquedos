@@ -3,6 +3,5 @@ logs
 Pipfile
 tmp*
 *.xlsx
-run.py
 .env
 flask_session
