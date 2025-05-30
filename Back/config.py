@@ -22,6 +22,7 @@ main_db_uri = (
 )
 
 class Config:
+    
     SQLALCHEMY_DATABASE_URI = main_db_uri
 
 
