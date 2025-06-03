@@ -66,8 +66,9 @@ class UserModelView(ModelView):
         "date",
         "budget",
         "is_confirmed",
-        "products",
         "is_checked",
+        "is_dayli_confirmed",
+        "products",
     ]
     form_columns = [ 
         "name",
@@ -174,6 +175,7 @@ class ProductModelView(ModelView):
         "description",
         "image",
         "static_quantity",
+        "lost_quantity",
 
     ]
     form_columns = [ 
@@ -182,7 +184,8 @@ class ProductModelView(ModelView):
         "is_available",
         "price",
         "description",
-        "image"
+        "image",
+        "quantity",
     ]
 
     can_create = True

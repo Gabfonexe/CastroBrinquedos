@@ -19,9 +19,7 @@ class Add_User(Resource):
         user_service.add_user(user)
         user_service.create_leads()
         amount_and_calendar_dayli_routine()
-
-        date_obj = Dates(date=user_date, total_amount=data['amount'])
-        add_date(new_date=date_obj)
+    
         return {"message": "Data registrada com sucesso"}, 201
 
 class Update_User(Resource):
