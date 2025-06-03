@@ -3,6 +3,7 @@ from datetime import date, datetime
 
 from sqlalchemy import and_
 import app
+from src.service.date import add_date
 from src.model.products import Products
 from src.extensions.extensions import db
 from src.model.user import Users
@@ -18,7 +19,7 @@ def amount_and_calendar_dayli_routine():
                 users = db.session.query(Users).filter(and_(Users.is_confirmed == True, Users.is_checked == False)).all() 
                 available_product_quantity = 0
                 print("🕒 Rodando rotina...")
-                if users:
+                if users:            
                     for user in users:
                         for product in user.products:
                             product_type_enum = Types_Products(product['type'])
@@ -35,7 +36,8 @@ def amount_and_calendar_dayli_routine():
                                     date_available_routine(user)
                                     db.session.commit()
                                     
-                        exist_date = db.session.query(Calendar).filter(Calendar.date==user.date).first()
+                        exist_calendar = db.session.query(Calendar).filter(Calendar.date==user.date).first()
+                        exist_date = db.session.query(Dates).filter(Dates.date==user.date).first()
 
                         products = db.session.query(Products).all()
                         for product in products:
@@ -44,14 +46,20 @@ def amount_and_calendar_dayli_routine():
                             unavailable_date = DateUnavailable(date=user.date, reason='Todos os produtos foram alugados')
                             db.session.add(unavailable_date)
                             db.session.commit()
-                        if exist_date and user.is_dayli_confirmed == False:
-                            exist_date.day_quantity += 1 
+                        if exist_calendar and user.is_dayli_confirmed == False:
+                            exist_calendar.day_quantity += 1 
                             db.session.commit()
-                        elif not exist_date:
+                        elif not exist_calendar:
                             new_calendar =  Calendar(date=user.date, day_quantity=1)
                             user.is_dayli_confirmed = True
                             db.session.add(new_calendar)
                             db.session.commit()
+                        if exist_date and user.is_dayli_confirmed == False:
+                            exist_date.total_amount += user.budget
+                            db.session.commit()
+                        elif not exist_date:
+                            new_date = Dates(date=user.date, total_amount=user.budget)
+                            add_date(new_date)
                        
 
             except Exception as e:
