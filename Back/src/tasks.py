@@ -9,15 +9,12 @@ from src.model.user import Users
 from src.model.date import Dates
 from src.model.calendar import Calendar, DateUnavailable
 from src.Enum import Types_Products
-import threading
-import time
 
 
 def amount_and_calendar_dayli_routine(): 
-    while True:
-        try:
-            with app.app.app_context():
-                now = datetime.now().date()
+        with app.app.app_context():
+            
+            try:
                 users = db.session.query(Users).filter(and_(Users.is_confirmed == True, Users.is_checked == False)).all() 
                 available_product_quantity = 0
                 print("🕒 Rodando rotina...")
@@ -57,10 +54,9 @@ def amount_and_calendar_dayli_routine():
                             db.session.commit()
                        
 
-        except Exception as e:
-            print(e)
-        print("🕒 Fim da rotina...")
-        time.sleep(6 * 60 * 60)
+            except Exception as e:
+                print(e)
+            print("🕒 Fim da rotina...")
         
             
 
