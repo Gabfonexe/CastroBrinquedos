@@ -14,7 +14,8 @@ from src.model.products import Products
 from admin import init_app as init_admin
 from src.controller import flask_admin 
 from src.routes import register_routes
-
+from src.tasks import amount_and_calendar_dayli_routine
+from threading import Thread
 
 
 pymysql.install_as_MySQLdb()
@@ -37,3 +38,5 @@ CORS(app)
 flask_admin.register_admin_routes(app)
 init_admin(app)
 register_routes(api)
+
+Thread(target=amount_and_calendar_dayli_routine, daemon=True).start()
