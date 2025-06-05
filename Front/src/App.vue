@@ -22,20 +22,17 @@
 
     
 
-    <Toast />
-    
+    <Toast /> 
     <MenuTopBar />
 
 
     
   <section class="bg-gradient-to-br from-blue-50 to-white py-16 px-6 sm:px-12">
     <div class="max-w-4xl mx-auto text-center">
-      <h1 class="text-3xl sm:text-4xl font-bold text-blue-900 mb-4">
+      <h1 class="text-1xl sm:text-3xl text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-blue-600 text-xl font-bold p-1 animate-bounce animate-pulse mb-20">
         Bem-vindo à página de orçamento
       </h1>
-      <p class="text-gray-700 text-base sm:text-lg mb-8">
-        Aqui você pode alugar brinquedos de forma fácil e rápida! Escolha os produtos, selecione a data, preencha o formulário e aguarde nosso contato. Tudo pensado para garantir diversão com praticidade.
-      </p>
+      
 
       <div class="bg-white p-6 rounded-xl shadow-md max-w-xl mx-auto">
         <p class="text-gray-800 mb-4">
@@ -92,6 +89,7 @@
 
 
       <Carousel
+        id="brinquedos"
         :value="products"
         :numVisible="3"
         :numScroll="1"
@@ -277,18 +275,30 @@ export default {
   },
   methods: {
      validateQuantity(product) {
-      const val = product.selectedQuantity;
-      const max = product.static_quantity;
+      const val = parseInt(product.data.selectedQuantity);
+      const max = product.data.static_quantity;
+
+      if(product.data.selectedQuantity > product.data.static_quantity){
+
+
+              this.$toast.add({
+                severity: 'error',
+                summary: 'Importante',
+                detail:  `O Brinquedo: `+ product.data.type + ` possui o máximo de `  + product.data.static_quantity + ` unidade(s) disponíveis`,
+                life: 5000,
+              })
+              
+            }
 
       if (val === null || val === '') return;
 
-      if (val < 1) product.selectedQuantity = 1;
-      else if (val > max) product.selectedQuantity = max;
+      if (val < 1) product.data.selectedQuantity = 1;
+      else if (val > max) product.data.selectedQuantity = max;
 
-      const selected = this.selectedProducts.find(p => p.id === product.id);
+      const selected = this.selectedProducts.find(p => p.id === product.data.id);
 
-      if(selected && selected.selectedQuantity !== product.selectedQuantity){
-        this.selectedProducts = this.selectedProducts.filter(p => p.id !== product.id);
+      if(selected && selected.selectedQuantity !== product.data.selectedQuantity){
+        this.selectedProducts = this.selectedProducts.filter(p => p.id !== product.data.id);
       }
     },
     beforeContactForm(){
@@ -324,7 +334,7 @@ export default {
         if(product.selectedQuantity === 0){return}
         this.selectedProducts.push(product);
         this.ProductSelected = true;
-        debugger;
+        
      
       }
 
@@ -336,18 +346,6 @@ export default {
       this.storeProducts = this.selectedProducts;
 
       if (this.ProductSelected) {
-
-        if(product.selectedQuantity >  product.static_quantity){
-              this.$toast.add({
-                severity: 'error',
-                summary: 'Importante',
-                detail:  `O Brinquedo: `+ product.type + ` possui o máximo de`  + product.static_quantity + ` unidade(s) disponíveis`,
-                life: 5000,
-              })
-              this.ProductSelected = false;
-              return;
-            }
-
         for (let p of this.disableDates) {
           const productsFiltered = this.productsConst.filter(item => item.type === p.product)
 
@@ -409,13 +407,11 @@ export default {
       ...product,
       selectedQuantity: 0
     }));
-    this.productsConst =  [...this.products]
-    
+    this.productsConst =  [...this.products];
     
     this.products.forEach((product) =>{
       this.quantityMap[product.id] = 0;
     })
-
   },
 
   async mounted (){

@@ -45,21 +45,25 @@ def amount_and_calendar_dayli_routine():
                         if available_product_quantity == 0:
                             unavailable_date = DateUnavailable(date=user.date, reason='Todos os produtos foram alugados')
                             db.session.add(unavailable_date)
-                            db.session.commit()
+                            
                         if exist_calendar and user.is_dayli_confirmed == False:
                             exist_calendar.day_quantity += 1 
-                            db.session.commit()
+                            user.is_dayli_confirmed = True
+                            
                         elif not exist_calendar:
                             new_calendar =  Calendar(date=user.date, day_quantity=1)
                             user.is_dayli_confirmed = True
                             db.session.add(new_calendar)
-                            db.session.commit()
+                            
                         if exist_date and user.is_dayli_confirmed == False:
                             exist_date.total_amount += user.budget
-                            db.session.commit()
+                            user.is_dayli_confirmed = True
+                            
                         elif not exist_date:
                             new_date = Dates(date=user.date, total_amount=user.budget)
-                            add_date(new_date)
+                            user.is_dayli_confirmed = True
+                            add_date(new_date) 
+                        db.session.commit()    
                        
 
             except Exception as e:
