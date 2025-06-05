@@ -1,8 +1,6 @@
 <template>
   <section id="faq" class="faq-section py-12 px-6 bg-yellow-50 max-w-4xl mx-auto rounded-xl shadow-lg">
-    <h2 class="text-4xl font-extrabold text-primary text-center mb-8">
-      Perguntas Frequentes
-    </h2>
+    
 
     <Accordion :multiple="true" :activeIndex="[0]" class="border border-yellow-200 rounded-lg overflow-hidden shadow-sm">
       <AccordionTab

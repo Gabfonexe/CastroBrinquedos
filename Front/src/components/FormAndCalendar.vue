@@ -1,11 +1,11 @@
 <template>
-  <section class="calendar-section py-16 px-4 bg-gradient-to-b from-white to-slate-50">
-    <Card class="max-w-6xl mx-auto rounded-2xl shadow-2xl border border-gray-200 bg-white transition-all duration-300 ease-in-out hover:shadow-3xl">
+  <section class="calendar-section py-16 px-1 bg-gradient-to-b from-white to-slate-50" id="disponibilidade">
+    <Card class="max-w-6xl mx-auto rounded-2xl shadow-2xl border border-gray-200 bg-white transition-all duration-300 ease-in-out hover:shadow-3xl ">
       <template #content>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 p-6 lg:p-10">
 
           <div>
-            <h2 class="text-2xl font-semibold text-gray-700 mb-4">📅 Escolha uma data</h2>
+            <h2 class="text-1xl sm:text-2xl font-semibold text-gray-700 mb-4">📅 Escolha uma data</h2>
             <div class="border border-gray-300 rounded-xl p-4 shadow-sm bg-white">
               <Calendar
                 v-model="selectedDate"
@@ -29,7 +29,7 @@
           </div>
 
           <div>
-            <h2 class="text-3xl font-bold text-gray-800 mb-6">📩 Solicite seu orçamento</h2>
+            <h2 class="text-1xl sm:text-2xl font-bold text-gray-800 mb-6">📩 Solicite seu orçamento</h2>
             <div class="space-y-4">
               <InputText
                 placeholder="👤 Nome"
@@ -58,19 +58,19 @@
               />
             </div>
 
-            <div class="flex justify-end gap-3 mt-6">
+            <div class="flex justify-end gap-2 mt-5">
               <Button 
                 label="Cancelar" 
                 severity="secondary" 
                 @click="cancelForm" 
-                class="px-5 py-2 text-sm transition-all duration-300 ease-in-out hover:shadow-md" 
+                class="px-1 py-2 text-sm transition-all duration-300 ease-in-out hover:shadow-md" 
               />
               <Button 
                 :label="isSubmitting ? 'Enviando...' : 'Enviar'" 
                 icon="pi pi-send" 
                 :disabled="isSubmitting" 
                 @click="submitContactForm" 
-                class="px-5 py-2 text-sm transition-all duration-300 ease-in-out hover:shadow-md" 
+                class="px-4 py-2 text-sm transition-all duration-300 ease-in-out hover:shadow-md" 
               />
             </div>
           </div>
@@ -227,7 +227,6 @@ export default{
                 }
                 return
             }
-
             const userData = {
                 phone: this.phone,
                 date: this.selectedDate,
