@@ -5,8 +5,8 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 p-6 lg:p-10">
 
           <div>
-            <h2 class="text-1xl sm:text-2xl font-semibold text-gray-700 mb-4">📅 Escolha uma data</h2>
-            <div class="border border-gray-300 rounded-xl p-4 shadow-sm bg-white">
+            <h2 class="text-1xl sm:text-3xl font-semibold text-gray-700 mb-3">📅 Escolha uma data</h2>
+            <div class="border border-gray-300 rounded-xl p-1 sm:p-4 shadow-sm bg-white">
               <Calendar
                 v-model="selectedDate"
                 :inline="true"
@@ -29,13 +29,14 @@
           </div>
 
           <div>
-            <h2 class="text-1xl sm:text-2xl font-bold text-gray-800 mb-6">📩 Solicite seu orçamento</h2>
+            <h2 class="text-1xl sm:text-2xl font-bold text-gray-800 mb-3">📩 Solicite seu orçamento</h2>
             <div class="space-y-4">
               <InputText
                 placeholder="👤 Nome"
                 id="name"
                 v-model="this.name"
                 class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                required
               />
               <InputText
                 placeholder="📧 Email"
@@ -178,7 +179,6 @@ export default{
           return dates.reason;
 
         },
-
         cancelForm(){
             this.name = '';
             this.email = '';
@@ -187,6 +187,15 @@ export default{
             this.message = '';
         },
         submitContactForm() {
+            if(this.name === '' || this.email === '' || this.phone === ''){
+              this.$toast.add({
+                severity: 'info',
+                summary: 'Dados não informado',
+                detail: 'Os dados de Nome, Email e Celular devem ser informados.',
+                life: 5000,
+              })
+              return;
+            }
             console.log('disabledDates: ', this.disabledDates); 
             if(this.storeProducts.some(product => 
               product.selectedQuantity === 0 )){

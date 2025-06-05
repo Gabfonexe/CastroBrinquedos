@@ -20,13 +20,9 @@
 
   <div  v-if="loading===false" class="app-container">
 
-    
-
     <Toast /> 
     <MenuTopBar />
-
-
-    
+  
   <section class="bg-gradient-to-br from-blue-50 to-white py-16 px-6 sm:px-12">
     <div class="max-w-4xl mx-auto text-center">
       <h1 class="text-1xl sm:text-3xl text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-blue-600 text-xl font-bold p-1 animate-bounce animate-pulse mb-20">
@@ -100,7 +96,7 @@
       >
         <template #item="slotProps">
           <Card
-            class="m-4 rounded-2xl border border-gray-200 shadow-lg transition-transform hover:scale-[1.03] bg-white"
+            class="m-12 sm:m-4 rounded-2xl border border-gray-200 shadow-lg transition-transform hover:scale-[1.03] bg-white"
           >
           
             <template #header>
@@ -158,15 +154,12 @@
         </template>
       </Carousel>
 
-
       <div>
         <FormAndCalendar />
       </div>
-    
-    
+        
     <FAQ />
     
-
     <footer class="footer bg-primary text-white text-center py-4">
       <p>Castro Brinquedos &copy; {{ new Date().getFullYear() }}</p>
     </footer>
@@ -196,13 +189,11 @@
         <Button label="Enviar" @click="submitContactForm" />
       </template>
     </Dialog>
-
     <FooterBar />
   </div>
 </template>
 
 <script>
-
 import DataView from 'primevue/dataview';
 import Timeline from 'primevue/timeline';
 import Calendar from 'primevue/calendar';
@@ -399,7 +390,6 @@ export default {
     ...mapWritableState(useAmountStore, ['amount', 'storeProducts', 'disabledDates']),
 
   },
-
 
   async beforeMount(){
     this.products = (await axios.get('https://castrobrinquedos.onrender.com/products')).data;
