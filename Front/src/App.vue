@@ -83,7 +83,6 @@
     </Dialog>
   </section>
 
-
       <Carousel
         id="brinquedos"
         :value="products"
@@ -91,19 +90,20 @@
         :numScroll="1"
         :responsiveOptions="[
           { breakpoint: '1024px', numVisible: 2, numScroll: 1 },
-          { breakpoint: '768px', numVisible: 1, numScroll: 1 }
+          { breakpoint: '768px', numVisible: 2, numScroll: 1 },
+          { breakpoint: '480px', numVisible: 1, numScroll: 1 }
         ]"
       >
         <template #item="slotProps">
           <Card
-            class="m-12 sm:m-4 rounded-2xl border border-gray-200 shadow-lg transition-transform hover:scale-[1.03] bg-white"
+            class="m-12 sm:m-4 rounded-2xl border border-gray-200 h-70 sm:h-210 shadow-lg transition-transform hover:scale-[1.03] bg-white"
           >
           
             <template #header>
               <img
                 :src="`https://castrobrinquedos.onrender.com/static/${slotProps.data.image}`"
                 :alt="slotProps.data.type"
-                class="w-full h-48 sm:h-64 object-cover rounded-t-2xl"
+                class="w-full h-40 sm:h-64 object-cover rounded-t-2xl"
               />
             </template>
 
