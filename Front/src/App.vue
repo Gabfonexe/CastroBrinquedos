@@ -116,17 +116,17 @@
 
             
             <template #content>
-              <p class="text-sm text-gray-600 text-center px-3 mt-2">
+              <p class="text-sm text-gray-600 text-center px-3 mt-2 ">
                 {{ slotProps.data.description }}
               </p>
-              <div class="text-center mt-3 font-semibold text-lg sm:text-xl text-rose-500">
+              <div class="text-center mt-3 font-semibold text-lg sm:text-xl text-rose-500 h-1 sm:h-10">
                 R$ {{ slotProps.data.price }}/dia
               </div>
             </template>
 
             
             <template #footer>
-              <div class="flex flex-col sm:flex-row justify-center items-center gap-3 mt-4 mb-4 px-4">
+              <div class="flex flex-col sm:flex-row justify-center items-center gap-3 mt-4 mb-4 px-4 h-14 sm:h-14">
                 <Button
                   :icon="isProductSelected(slotProps.data) ? 'pi pi-check' : 'pi pi-plus'"
                   @click="toggleItem(slotProps.data)"
@@ -144,7 +144,7 @@
                   :min="1"
                   :max="slotProps.data.static_quantity"
                   placeholder="Qtd"
-                  class="w-20 h-10 text-center border border-gray-300 rounded-md"
+                  class="w-4 sm:w-3 h-6 sm:h-9 text-center border border-gray-300 rounded-md"
                   @input="validateQuantity(slotProps)"
                   @blur="validateQuantity(slotProps)"
                 />
@@ -154,10 +154,8 @@
         </template>
       </Carousel>
 
-      <div>
-        <FormAndCalendar />
-      </div>
-        
+      
+    <FormAndCalendar />     
     <FAQ />
     
     <footer class="footer bg-primary text-white text-center py-4">
