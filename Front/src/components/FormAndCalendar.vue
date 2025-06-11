@@ -162,7 +162,6 @@ export default{
       ...mapWritableState(useAmountStore, ['disableDates']),
 
       getTooltip(){
-          debugger;
           // const dates =  this.newDisableDates.filter((findDate) => {
           //   findDate.date === date && findDate.product === this.storeProducts.filter((product) => {product === findDate.product});
           // });
