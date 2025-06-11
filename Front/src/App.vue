@@ -93,41 +93,41 @@
           { breakpoint: '768px', numVisible: 2, numScroll: 1 },
           { breakpoint: '480px', numVisible: 1, numScroll: 1 }
         ]"
+        class="p-card p-component m-3 rounded-2xl border border-gray-200 shadow-md transition-transform hover:scale-[1.02] bg-white flex flex-col justify-between h-[160px] sm:h-[380px] max-w-[200px] sm:max-w-[320px]"
       >
         <template #item="slotProps">
           
           <Card
-            class="m-12 sm:m-4 rounded-2xl border border-gray-200 h-21 sm:h-210 shadow-lg transition-transform hover:scale-[1.03] bg-white"
-          >
-          
+            class="m-12 sm:m-4 rounded-2xl border border-gray-200 shadow-lg transition-transform hover:scale-[1.03] bg-white flex flex-col justify-between h-[400px] sm:h-[420px]"
+
+          >         
             <template #header>
               <img
                 :src="`https://castrobrinquedos.onrender.com/static/${slotProps.data.image}`"
                 :alt="slotProps.data.type"
-                class=" sm:w-full h-21 sm:h-64 object-cover rounded-t-2xl"
+                class="w-full h-9rem sm:w-full sm:h-64 object-cover rounded-t-2xl"
               />
             </template>
 
             
             <template #title>
-              <h3 class="text-base sm:text-lg font-bold text-center text-gray-800 mt-3">
+              <h3 class="text-base sm:text-lg font-bold text-center text-gray-800 mt-3 h-1rem min-h-[40px]">
                 {{ slotProps.data.type }}
               </h3>
             </template>
 
             
             <template #content>
-              <p class="text-sm text-gray-600 text-center px-3 mt-2 ">
+              <p class="text-sm text-gray-600 text-center px-3 mt-2 h-5rem">
                 {{ slotProps.data.description }}
               </p>
-              <div class="text-center mt-3 font-semibold text-lg sm:text-xl text-rose-500 h-1 sm:h-10">
+              <div class="text-center mt-1 font-semibold text-lg sm:text-xl text-rose-500 h-1rem sm:h-10">
                 R$ {{ slotProps.data.price }}/dia
               </div>
             </template>
 
-            
             <template #footer>
-              <div class="flex flex-col sm:flex-row justify-center items-center gap-3 mt-4 mb-4 px-4 h-14 sm:h-14">
+              <div class="flex flex-col sm:flex-row justify-center items-center gap-1 mt-1 mb-4 px-4 h-3rem sm:h-14">
                 <Button
                   :icon="isProductSelected(slotProps.data) ? 'pi pi-check' : 'pi pi-plus'"
                   @click="toggleItem(slotProps.data)"
@@ -151,11 +151,17 @@
                 />
               </div>
             </template>
+            
           </Card>
+            <div v-if="isMobile" class="flex justify-center mt-4">
+              <Button icon="pi pi-arrow-down" @click="scrollToDisponibilidade" class="p-button-rounded p-button-text text-2xl text-rose-500 animate-bounce" />
+            </div>
+
         </template>
+        
       </Carousel>
 
-      
+
     <FormAndCalendar />     
     <FAQ />
     
@@ -215,8 +221,6 @@ import { mapState, mapWritableState } from 'pinia';
 import ProgressSpinner from 'primevue/progressspinner';
 
 
-
-
 export default {
   name: 'App',
   components: {
@@ -261,10 +265,20 @@ export default {
       productsConst: [],
       quantityMap: {},
       loading: true,
+      isMobile: false,
     };
   },
   methods: {
-     validateQuantity(product) {
+    handleResize() {
+        this.isMobile = window.innerWidth <= 768;
+      },
+    scrollToDisponibilidade() {
+        const target = document.getElementById("disponibilidade");
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth" });
+        }
+      },
+    validateQuantity(product) {
       const val = parseInt(product.data.selectedQuantity);
       const max = product.data.static_quantity;
 
@@ -391,6 +405,7 @@ export default {
   },
 
   async beforeMount(){
+    window.removeEventListener("resize", this.handleResize);
     this.products = (await axios.get('https://castrobrinquedos.onrender.com/products')).data;
     this.products = this.products.map(product => ({
       ...product,
@@ -404,6 +419,8 @@ export default {
   },
 
   async mounted (){
+    this.isMobile = window.innerWidth <= 768;
+    window.addEventListener("resize", this.handleResize);
     let response = null;
 
     while(!response ||  response.status !== 200){
