@@ -11,6 +11,9 @@ import Ripple from 'primevue/ripple'
 import Toast from 'primevue/toast'
 import ToastService from 'primevue/toastservice'
 import Aura from '@primeuix/themes/aura';
+import Tooltip from 'primevue/tooltip';
+
+
 
 import 'primevue/resources/themes/lara-light-blue/theme.css'
 import 'primevue/resources/primevue.min.css'
@@ -51,6 +54,7 @@ app.component('Toast', Toast)
 app.component('p-input-text', InputText)
 app.component('p-password', Password)
 app.component('p-button', Button)
+app.directive('tooltip', Tooltip);
 app.directive('ripple', Ripple)
 app.component('Menu', Menu)
 
