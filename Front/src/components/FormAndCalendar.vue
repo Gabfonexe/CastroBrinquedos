@@ -13,12 +13,13 @@
                 :minDate="minDate"
                 :maxDate="maxDate"
                 :disabledDates="newDisableDates"
-                class="w-full p-calendar"
+                class="w-full p-calendar" 
                 :locale="pt"
               >
                 <template #dateTemplate="{ date }">
                   <div
-                    v-tooltip="getTooltip(date)"
+                    :v-tooltip="'Teste'"
+
                     class="w-full h-full flex items-center justify-center"
                   >
                     {{ date.day }}
@@ -143,9 +144,10 @@ export default{
 
           const convertDate = new Date(year, month, day); 
           
-
           const obj = { date: convertDate, product: item.product };
           this.disableDates.push(obj);
+
+          if(!item.product){this.disabledDates.push(obj)};
 
         });
       },
@@ -158,6 +160,19 @@ export default{
         'disabledDates',
       ]),
       ...mapWritableState(useAmountStore, ['disableDates']),
+
+      getTooltip(){
+          debugger;
+          // const dates =  this.newDisableDates.filter((findDate) => {
+          //   findDate.date === date && findDate.product === this.storeProducts.filter((product) => {product === findDate.product});
+          // });
+
+          const dates = this.DisableDates.map((item) =>{
+            item['reason']; 
+          })
+          return dates.reason;
+
+        },
     },
     watch:{
       disabledDates: {
@@ -171,14 +186,6 @@ export default{
 
     methods:{
 
-        getTooltip(date){
-          debugger;
-          const dates =  this.newDisableDates.filter((findDate) => {
-            findDate.date === date && findDate.product === this.storeProducts.filter((product) => {product === findDate.product});
-          });
-          return dates.reason;
-
-        },
         cancelForm(){
             this.name = '';
             this.email = '';
@@ -196,7 +203,6 @@ export default{
               })
               return;
             }
-            console.log('disabledDates: ', this.disabledDates); 
             if(this.storeProducts.some(product => 
               product.selectedQuantity === 0 )){
                 this.$toast.add({
