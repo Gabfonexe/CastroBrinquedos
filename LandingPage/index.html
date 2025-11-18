@@ -254,7 +254,6 @@
             margin-bottom: 1rem;
         }
         
-        /* Responsividade */
         @media (max-width: 768px) {
             .carousel-item {
                 min-width: 250px;
@@ -279,7 +278,7 @@
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-blue-400 text-xl font-bold p-2 animate-pulse">Castro Brinquedos</span>
             </a>
             <div class="hidden md:block">
-                <a href="https://castro-brinquedos-1r7b.vercel.app/" class="btn-primary px-6 py-2 rounded-full font-bold">Reservar Agora</a>
+                <a href="https://wa.me/5521968843651" class="btn-primary px-6 py-2 rounded-full font-bold">Reservar Agora</a>
             </div>
             <div class="md:hidden">
                 <button id="menu-toggle" class="text-gray-700 focus:outline-none">
@@ -307,7 +306,7 @@
                 <p class="text-lg mb-8">Alugue os melhores brinquedos para tornar sua festa inesquecível. Temos opções para todas as idades e espaços.</p>
                 <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                     <a href="#brinquedos" class="btn-secondary px-8 py-3 rounded-full font-bold text-center">Ver Brinquedos</a>
-                    <a href="https://castro-brinquedos-1r7b.vercel.app/" class="bg-white text-primary px-8 py-3 rounded-full font-bold text-center hover:bg-gray-100 transition-colors">Reservar Agora</a>
+                    <a href="https://wa.me/5521968843651" class="bg-white text-primary px-8 py-3 rounded-full font-bold text-center hover:bg-gray-100 transition-colors">Reservar Agora</a>
                 </div>
             </div>
             <div class="md:w-1/2 flex justify-center">
@@ -392,7 +391,7 @@
                         O que nos move é saber que, por algumas horas, podemos tornar a vida de uma família mais leve, mais alegre e muito mais divertida.
                     </p>
                     <div class="mt-8">
-                        <a href="https://castro-brinquedos-1r7b.vercel.app/"  class="btn-primary px-8 py-3 rounded-full font-bold inline-block">Reservar Agora</a>
+                        <a href="https://wa.me/5521968843651"  class="btn-primary px-8 py-3 rounded-full font-bold inline-block">Reservar Agora</a>
                     </div>
                 </div>
             </div>
@@ -552,7 +551,7 @@
             </div>
             
             <div class="text-center mt-10">
-                <a href="https://castro-brinquedos-1r7b.vercel.app/" class="btn-primary px-8 py-3 rounded-full font-bold inline-block">Reservar Agora</a>
+                <a href="https://wa.me/5521968843651" class="btn-primary px-8 py-3 rounded-full font-bold inline-block">Reservar Agora</a>
             </div>
         </div>
     </section>
@@ -622,7 +621,7 @@
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Pronto para garantir a diversão da sua festa?</h2>
             <p class="text-xl text-white mb-8 max-w-2xl mx-auto">Entre em contato conosco agora mesmo e faça sua reserva. Temos os melhores brinquedos para tornar seu evento inesquecível!</p>
-            <a href="https://castro-brinquedos-1r7b.vercel.app/" class="bg-white text-primary px-8 py-3 rounded-full font-bold text-lg inline-block hover:bg-gray-100 transition-colors">Reservar Agora</a>
+            <a href="https://wa.me/5521968843651" class="bg-white text-primary px-8 py-3 rounded-full font-bold text-lg inline-block hover:bg-gray-100 transition-colors">Reservar Agora</a>
         </div>
     </section>
 
@@ -744,6 +743,12 @@
             const mobileMenu = document.getElementById('mobile-menu');
             mobileMenu.classList.toggle('hidden');
         });
+
+
+        // function sendWhatsappMessage(){
+        //     const message = encodeURIComponent(`Olá!, me chamo ${this.form.nome}, fiz um orçamento prévio no site: R$ ${this.form.orcamento}, total de area: ${this.form.area} m², tipo de parede: ${this.form.tipoCimento}. Vi o site da Pintura Master e fiquei interessado nos serviços.`);
+        //     setTimeout(window.open(`https://wa.me/${this.phoneNumber}?text=${message}`, '_blank', 'noopener,noreferrer'), 3000)
+        // }
         
         
         const carousel = document.getElementById('products-carousel');
